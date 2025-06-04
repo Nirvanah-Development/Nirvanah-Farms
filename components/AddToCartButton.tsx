@@ -7,6 +7,7 @@ import useStore from "@/store";
 import toast from "react-hot-toast";
 import PriceFormatter from "./PriceFormatter";
 import QuantityButtons from "./QuantityButtons";
+import { useCartSidebar } from "./CartSidebarContext";
 
 interface Props {
   product: Product;
@@ -15,13 +16,15 @@ interface Props {
 
 const AddToCartButton = ({ product, className }: Props) => {
   const { addItem, getItemCount } = useStore();
+  const { setOpen } = useCartSidebar();
   const itemCount = getItemCount(product?._id);
 
   const handleAddToCart = () => {
-      addItem(product);
-      toast.success(
-        `${product?.name?.substring(0, 12)}... added successfully!`
-      );
+    addItem(product);
+    setOpen(true);
+    toast.success(
+      `${product?.name?.substring(0, 12)}... added successfully!`
+    );
   };
   return (
     <div className="w-full h-12 flex items-center">
@@ -34,7 +37,7 @@ const AddToCartButton = ({ product, className }: Props) => {
           <div className="flex items-center justify-between border-t pt-1">
             <span className="text-xs font-semibold">Subtotal</span>
             <PriceFormatter
-              amount={product?.price ? product?.price * itemCount : 0}
+              amount={product?.regularPrice ? product?.regularPrice * itemCount : 0}
             />
           </div>
         </div>

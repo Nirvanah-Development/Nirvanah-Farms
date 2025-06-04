@@ -32,6 +32,78 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetClose } from "@/components/ui/sheet";
+import { cn } from "@/lib/utils";
+
+const CartSidebar: React.FC<{ open: boolean; onOpenChange: (open: boolean) => void }> = ({ open, onOpenChange }) => {
+  const { getGroupedItems, getTotalPrice, getItemCount, deleteCartProduct } = useStore();
+  const groupedItems = getGroupedItems();
+
+  return (
+    <Sheet open={open} onOpenChange={onOpenChange}>
+      <SheetContent
+        side="right"
+        className={cn(
+          "flex flex-col h-full p-0",
+          "w-full max-w-[90vw] sm:max-w-[400px] md:max-w-[500px] lg:max-w-[500px]"
+        )}
+      >
+        <SheetHeader className="p-6 border-b">
+          <SheetTitle>Shopping Cart</SheetTitle>
+        </SheetHeader>
+        <div className="flex-1 overflow-y-auto p-6">
+          {groupedItems.length === 0 ? (
+            <div className="text-center text-gray-500 mt-10">Your cart is empty.</div>
+          ) : (
+            groupedItems.map(({ product }) => {
+              const itemCount = getItemCount(product._id);
+              return (
+                <div key={product._id} className="flex items-center gap-4 mb-6">
+                  <Image
+                    src={product.images?.[0]?.asset?._ref ? product.images[0].url : "/placeholder.png"}
+                    alt={product.name}
+                    width={80}
+                    height={80}
+                    className="rounded border object-cover w-20 h-20"
+                  />
+                  <div className="flex-1">
+                    <div className="font-semibold text-base line-clamp-1">{product.name}</div>
+                    <div className="flex items-center gap-2 mt-2">
+                      <QuantityButtons product={product} />
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => deleteCartProduct(product._id)}
+                        className="text-gray-400 hover:text-red-600"
+                        aria-label="Remove"
+                      >
+                        <Trash size={18} />
+                      </Button>
+                    </div>
+                  </div>
+                  <div className="font-bold text-green-600 text-lg whitespace-nowrap">
+                    <PriceFormatter amount={product.price * itemCount} />
+                  </div>
+                </div>
+              );
+            })
+          )}
+        </div>
+        <div className="p-6 border-t">
+          <div className="flex items-center justify-between mb-4">
+            <span className="font-semibold text-lg">Subtotal</span>
+            <span className="font-bold text-lg">
+              <PriceFormatter amount={getTotalPrice()} />
+            </span>
+          </div>
+          <Button className="w-full bg-shop_dark_green text-white font-semibold rounded-md">
+            Order Cash on Delivery
+          </Button>
+        </div>
+      </SheetContent>
+    </Sheet>
+  );
+};
 
 const CartPage = () => {
   const {
