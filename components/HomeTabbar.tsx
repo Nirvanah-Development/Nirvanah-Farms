@@ -7,6 +7,8 @@ interface Props {
   categories: Category[];
 }
 
+const ALL_FRUITS = "ALL_FRUITS";
+
 const HomeTabbar = ({ selectedTab, onTabSelect, categories }: Props) => {
   return (
     <div className="flex items-center w-full">
@@ -14,6 +16,16 @@ const HomeTabbar = ({ selectedTab, onTabSelect, categories }: Props) => {
         <div
           className="flex items-center gap-1.5 md:gap-3 overflow-x-auto scrollbar-hide w-full max-w-full flex-nowrap text-sm font-semibold"
         >
+          <button
+            onClick={() => onTabSelect(ALL_FRUITS)}
+            className={`whitespace-nowrap border border-shop_light_green/30 px-4 py-1.5 md:px-6 md:py-2 rounded-full hover:bg-shop_light_green hover:border-shop_light_green hover:text-white hoverEffect ${
+              selectedTab === ALL_FRUITS
+                ? "bg-shop_light_green text-white border-shop_light_green"
+                : "bg-shop_light_green/10"
+            }`}
+          >
+            all fruits
+          </button>
           {categories?.map((category) => (
             <button
               onClick={() => onTabSelect(category?.title || "")}

@@ -272,16 +272,7 @@ export type Product = {
     _key: string;
     [internalGroqTypeReferenceTo]?: "category";
   }>;
-  stock?: number;
-  brand?: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "brand";
-  };
   status?: "sale";
-  variant?: "gadget" | "appliances" | "refrigerators" | "others";
-  isFeatured?: boolean;
   regularPrice?: number;
   salePrice?: number;
 };

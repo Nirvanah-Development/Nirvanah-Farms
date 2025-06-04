@@ -45,7 +45,7 @@ const SingleProductPage = async ({
   return (
     <Container className="flex flex-col md:flex-row gap-10 py-10">
       {product?.images && (
-        <ImageView images={product?.images} isStock={product?.stock} />
+        <ImageView images={product?.images} />
       )}
       <div className="w-full md:w-1/2 flex flex-col gap-5">
         <div className="space-y-1">
@@ -72,11 +72,6 @@ const SingleProductPage = async ({
             status={product?.status}
             className="text-lg font-bold"
           />
-          <p
-            className={`px-4 py-1.5 text-sm text-center inline-block font-semibold rounded-lg ${product?.stock === 0 ? "bg-red-100 text-red-600" : "text-green-600 bg-green-100"}`}
-          >
-            {(product?.stock as number) > 0 ? "In Stock" : "Out of Stock"}
-          </p>
         </div>
         <div className="flex items-center gap-2.5 lg:gap-3">
           <AddToCartButton product={product} />

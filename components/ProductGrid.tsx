@@ -14,15 +14,17 @@ interface Props {
   categories: Category[];
 }
 
+const ALL_FRUITS = "ALL_FRUITS";
+
 const ProductGrid = ({ categories }: Props) => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
-  const [selectedTab, setSelectedTab] = useState(categories[0]?.title || "");
+  const [selectedTab, setSelectedTab] = useState(ALL_FRUITS);
   
-  const query = `*[_type == "product" && categories[]->title match $category] | order(name asc){
-    ...,"categories": categories[]->title
-  }`;
-  const params = { category: selectedTab };
+  const query = selectedTab === ALL_FRUITS
+    ? `*[_type == "product"] | order(name asc){...,"categories": categories[]->title}`
+    : `*[_type == "product" && categories[]->title match $category] | order(name asc){...,"categories": categories[]->title}`;
+  const params = selectedTab === ALL_FRUITS ? {} : { category: selectedTab };
 
   useEffect(() => {
     const fetchData = async () => {

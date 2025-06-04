@@ -16,17 +16,12 @@ interface Props {
 const AddToCartButton = ({ product, className }: Props) => {
   const { addItem, getItemCount } = useStore();
   const itemCount = getItemCount(product?._id);
-  const isOutOfStock = product?.stock === 0;
 
   const handleAddToCart = () => {
-    if ((product?.stock as number) > itemCount) {
       addItem(product);
       toast.success(
         `${product?.name?.substring(0, 12)}... added successfully!`
       );
-    } else {
-      toast.error("Can not add more than available stock");
-    }
   };
   return (
     <div className="w-full h-12 flex items-center">
@@ -46,13 +41,12 @@ const AddToCartButton = ({ product, className }: Props) => {
       ) : (
         <Button
           onClick={handleAddToCart}
-          disabled={isOutOfStock}
           className={cn(
             "w-full bg-shop_dark_green/80 text-lightBg shadow-none border border-shop_dark_green/80 font-semibold tracking-wide text-white hover:bg-shop_dark_green hover:border-shop_dark_green hoverEffect",
             className
           )}
         >
-          <ShoppingBag /> {isOutOfStock ? "Out of Stock" : "Add to Cart"}
+          <ShoppingBag /> Add to Cart
         </Button>
       )}
     </div>

@@ -64,7 +64,7 @@ export const productType = defineType({
                   },
                   {
                     name: "target",
-                    type: "string",
+      type: "string",
                     title: "Open in new tab",
                     options: {
                       list: [
@@ -104,19 +104,6 @@ export const productType = defineType({
       of: [{ type: "reference", to: { type: "category" } }],
     }),
     defineField({
-      name: "stock",
-      title: "Stock",
-      type: "number",
-      validation: (Rule) => Rule.min(0),
-    }),
-    defineField({
-      name: "brand",
-      title: "Brand",
-      type: "reference",
-      to: { type: "brand" },
-    }),
-
-    defineField({
       name: "status",
       title: "Product Status",
       type: "string",
@@ -125,26 +112,6 @@ export const productType = defineType({
           { title: "Sale", value: "sale" },
         ],
       },
-    }),
-    defineField({
-      name: "variant",
-      title: "Product Type",
-      type: "string",
-      options: {
-        list: [
-          { title: "Gadget", value: "gadget" },
-          { title: "Appliances", value: "appliances" },
-          { title: "Refrigerators", value: "refrigerators" },
-          { title: "Others", value: "others" },
-        ],
-      },
-    }),
-    defineField({
-      name: "isFeatured",
-      title: "Featured Product",
-      type: "boolean",
-      description: "Toggle to Featured on or off",
-      initialValue: false,
     }),
   ],
   preview: {
