@@ -279,9 +279,11 @@ export type Product = {
     _weak?: boolean;
     [internalGroqTypeReferenceTo]?: "brand";
   };
-  status?: "new" | "hot" | "sale";
+  status?: "sale";
   variant?: "gadget" | "appliances" | "refrigerators" | "others";
   isFeatured?: boolean;
+  regularPrice?: number;
+  salePrice?: number;
 };
 
 export type Brand = {

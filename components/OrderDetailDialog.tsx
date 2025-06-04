@@ -90,7 +90,7 @@ const OrderDetailDialog: React.FC<OrderDetailsDialogProps> = ({
                 <TableCell>{product?.quantity}</TableCell>
                 <TableCell>
                   <PriceFormatter
-                    amount={product?.product?.price}
+                    amount={product?.product?.status === 'sale' ? product?.product?.salePrice : product?.product?.regularPrice}
                     className="text-black font-medium"
                   />
                 </TableCell>

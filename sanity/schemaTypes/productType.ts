@@ -1,5 +1,5 @@
 import { TrolleyIcon } from "@sanity/icons";
-import { defineField, defineType } from "sanity";
+import { defineField, defineType, defineArrayMember } from "sanity";
 
 export const productType = defineType({
   name: "product",
@@ -32,17 +32,68 @@ export const productType = defineType({
     defineField({
       name: "description",
       title: "Description",
-      type: "string",
+      type: "array",
+      of: [
+        defineArrayMember({
+          type: "block",
+          styles: [
+            { title: "Normal", value: "normal" },
+            { title: "H1", value: "h1" },
+            { title: "H2", value: "h2" },
+            { title: "H3", value: "h3" },
+            { title: "Quote", value: "blockquote" }
+          ],
+          marks: {
+            decorators: [
+              { title: "Strong", value: "strong" },
+              { title: "Emphasis", value: "em" },
+              { title: "Code", value: "code" },
+              { title: "Underline", value: "underline" },
+              { title: "Strike", value: "strike-through" }
+            ],
+            annotations: [
+              {
+                name: "link",
+                type: "object",
+                title: "Link",
+                fields: [
+                  {
+                    name: "href",
+                    type: "url",
+                    title: "URL"
+                  },
+                  {
+                    name: "target",
+                    type: "string",
+                    title: "Open in new tab",
+                    options: {
+                      list: [
+                        { title: "Same window", value: "_self" },
+                        { title: "New window", value: "_blank" }
+                      ]
+                    },
+                    initialValue: "_blank"
+                  }
+                ]
+              }
+            ]
+          },
+          lists: [
+            { title: "Bullet", value: "bullet" },
+            { title: "Number", value: "number" }
+          ]
+        }),
+      ],
     }),
     defineField({
-      name: "price",
-      title: "Price",
+      name: "regularPrice",
+      title: "Regular Price",
       type: "number",
       validation: (Rule) => Rule.required().min(0),
     }),
     defineField({
-      name: "discount",
-      title: "Discount",
+      name: "salePrice",
+      title: "Sale Price",
       type: "number",
       validation: (Rule) => Rule.required().min(0),
     }),
@@ -71,8 +122,6 @@ export const productType = defineType({
       type: "string",
       options: {
         list: [
-          { title: "New", value: "new" },
-          { title: "Hot", value: "hot" },
           { title: "Sale", value: "sale" },
         ],
       },

@@ -3,21 +3,23 @@ import { cn } from "@/lib/utils";
 import PriceFormatter from "./PriceFormatter";
 
 interface Props {
-  price: number | undefined;
-  discount: number | undefined;
+  regularPrice: number | undefined;
+  salePrice: number | undefined;
+  status?: string;
   className?: string;
 }
-const PriceView = ({ price, discount, className }: Props) => {
+const PriceView = ({ regularPrice, salePrice, status, className }: Props) => {
+  const isSale = status === "sale" && salePrice && salePrice > 0;
   return (
     <div className="flex items-center justify-between gap-5">
       <div className="flex items-center gap-2">
         <PriceFormatter
-          amount={price}
+          amount={isSale ? salePrice : regularPrice}
           className={cn("text-shop_dark_green", className)}
         />
-        {price && discount && (
+        {isSale && (
           <PriceFormatter
-            amount={price + (discount * price) / 100}
+            amount={regularPrice}
             className={twMerge(
               "line-through text-xs font-normal text-zinc-500",
               className

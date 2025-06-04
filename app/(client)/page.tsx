@@ -14,7 +14,7 @@ const Home = async () => {
   return (
     <Container className="bg-shop-light-pink">
       <HomeBanner />
-      <ProductGrid />
+      <ProductGrid categories={categories} />
       <HomeCategories categories={categories} />
       <ShopByBrands />
       <LatestBlog />
