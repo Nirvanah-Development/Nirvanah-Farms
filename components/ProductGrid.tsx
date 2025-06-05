@@ -8,17 +8,23 @@ import NoProductAvailable from "./NoProductAvailable";
 import { Loader2 } from "lucide-react";
 import Container from "./Container";
 import HomeTabbar from "./HomeTabbar";
-import { productType } from "@/constants/data";
-import { Product } from "@/sanity.types";
+import { Category, Product } from "@/sanity.types";
 
-const ProductGrid = () => {
+interface Props {
+  categories: Category[];
+}
+
+const ALL_FRUITS = "ALL_FRUITS";
+
+const ProductGrid = ({ categories }: Props) => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
-  const [selectedTab, setSelectedTab] = useState(productType[0]?.title || "");
-  const query = `*[_type == "product" && variant == $variant] | order(name asc){
-  ...,"categories": categories[]->title
-}`;
-  const params = { variant: selectedTab.toLowerCase() };
+  const [selectedTab, setSelectedTab] = useState(ALL_FRUITS);
+  
+  const query = selectedTab === ALL_FRUITS
+    ? `*[_type == "product"] | order(name asc){...,"categories": categories[]->title}`
+    : `*[_type == "product" && categories[]->title match $category] | order(name asc){...,"categories": categories[]->title}`;
+  const params = selectedTab === ALL_FRUITS ? {} : { category: selectedTab };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,7 +43,11 @@ const ProductGrid = () => {
 
   return (
     <Container className="flex flex-col lg:px-0 my-10">
-      <HomeTabbar selectedTab={selectedTab} onTabSelect={setSelectedTab} />
+      <HomeTabbar 
+        selectedTab={selectedTab} 
+        onTabSelect={setSelectedTab} 
+        categories={categories}
+      />
       {loading ? (
         <div className="flex flex-col items-center justify-center py-10 min-h-80 space-y-4 text-center bg-gray-100 rounded-lg w-full mt-10">
           <motion.div className="flex items-center space-x-2 text-blue-600">

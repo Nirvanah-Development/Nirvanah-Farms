@@ -1,5 +1,5 @@
 import { Product } from "@/sanity.types";
-import useStore from "@/store";
+import { useCartStore } from "@/store/cart";
 import React from "react";
 import { Button } from "./ui/button";
 import { Minus, Plus } from "lucide-react";
@@ -11,26 +11,38 @@ interface Props {
   className?: string;
 }
 const QuantityButtons = ({ product, className }: Props) => {
-  const { addItem, removeItem, getItemCount } = useStore();
-  const itemCount = getItemCount(product?._id);
-  const isOutOfStock = product?.stock === 0;
+  const { addItem, updateQuantity, items } = useCartStore();
+  const itemCount = items.find(item => item.product._id === product?._id)?.quantity || 0;
 
   const handleRemoveProduct = () => {
-    removeItem(product?._id);
+    if (!product?._id) {
+      toast.error("Invalid product");
+      return;
+    }
+
     if (itemCount > 1) {
+      updateQuantity(product._id, itemCount - 1);
       toast.success("Quantity Decreased successfully!");
-    } else {
+    } else if (itemCount === 1) {
+      updateQuantity(product._id, 0);
       toast.success(`${product?.name?.substring(0, 12)} removed successfully!`);
     }
   };
 
   const handleAddToCart = () => {
-    if ((product?.stock as number) > itemCount) {
-      addItem(product);
-      toast.success("Quantity Increased successfully!");
-    } else {
-      toast.error("Can not add more than available stock");
+    if (!product?._id) {
+      toast.error("Invalid product");
+      return;
     }
+
+    // Use the full Product type directly
+    const cartItem = {
+      product: product,
+      quantity: 1,
+    };
+    
+    addItem(cartItem);
+    toast.success("Quantity Increased successfully!");
   };
 
   return (
@@ -39,7 +51,7 @@ const QuantityButtons = ({ product, className }: Props) => {
         onClick={handleRemoveProduct}
         variant="outline"
         size="icon"
-        disabled={itemCount === 0 || isOutOfStock}
+        disabled={itemCount === 0 || !product?._id}
         className="w-6 h-6 border-[1px] hover:bg-shop_dark_green/20 hoverEffect"
       >
         <Minus />
@@ -51,7 +63,7 @@ const QuantityButtons = ({ product, className }: Props) => {
         onClick={handleAddToCart}
         variant="outline"
         size="icon"
-        disabled={isOutOfStock}
+        disabled={!product?._id}
         className="w-6 h-6 border-[1px] hover:bg-shop_dark_green/20 hoverEffect"
       >
         <Plus />

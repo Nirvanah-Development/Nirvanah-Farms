@@ -43,7 +43,6 @@ const WishListProducts = () => {
                     Category
                   </th>
                   <th className="p-2 text-left hidden md:table-cell">Type</th>
-                  <th className="p-2 text-left hidden md:table-cell">Status</th>
                   <th className="p-2 text-left">Price</th>
                   <th className="p-2 text-center md:text-left">Action</th>
                 </tr>
@@ -88,19 +87,8 @@ const WishListProducts = () => {
                       <td className="p-2 capitalize hidden md:table-cell">
                         {product?.variant}
                       </td>
-                      <td
-                        className={`p-2 w-24 ${
-                          (product?.stock as number) > 0
-                            ? "text-green-600"
-                            : "text-red-600"
-                        } font-medium text-sm hidden md:table-cell`}
-                      >
-                        {(product?.stock as number) > 0
-                          ? "In Stock"
-                          : "Out of Stock"}
-                      </td>
                       <td className="p-2">
-                        <PriceFormatter amount={product?.price} />
+                        <PriceFormatter amount={product?.status === 'sale' ? product?.salePrice : product?.regularPrice} />
                       </td>
                       <td className="p-2">
                         <AddToCartButton product={product} className="w-full" />

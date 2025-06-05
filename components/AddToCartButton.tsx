@@ -3,10 +3,11 @@ import { Product } from "@/sanity.types";
 import { Button } from "./ui/button";
 import { cn } from "@/lib/utils";
 import { ShoppingBag } from "lucide-react";
-import useStore from "@/store";
+import { useCartStore } from "@/store/cart";
 import toast from "react-hot-toast";
 import PriceFormatter from "./PriceFormatter";
 import QuantityButtons from "./QuantityButtons";
+import { useCart } from "@/contexts/CartContext";
 
 interface Props {
   product: Product;
@@ -14,23 +15,38 @@ interface Props {
 }
 
 const AddToCartButton = ({ product, className }: Props) => {
-  const { addItem, getItemCount } = useStore();
-  const itemCount = getItemCount(product?._id);
-  const isOutOfStock = product?.stock === 0;
+  const { addItem, items } = useCartStore();
+  const { openCart } = useCart();
+  
+  // Get item count from the cart store with proper null checking
+  const itemCount = items.find(item => item.product._id === product?._id)?.quantity || 0;
 
   const handleAddToCart = () => {
-    if ((product?.stock as number) > itemCount) {
-      addItem(product);
-      toast.success(
-        `${product?.name?.substring(0, 12)}... added successfully!`
-      );
-    } else {
-      toast.error("Can not add more than available stock");
+    if (!product?._id) {
+      toast.error("Invalid product");
+      return;
     }
+
+    // Use the full Product type directly
+    const cartItem = {
+      product: product,
+      quantity: 1,
+    };
+    
+    addItem(cartItem);
+    openCart();
+    toast.success(
+      `${product?.name?.substring(0, 12)}... added successfully!`
+    );
   };
+
+  // Calculate price with null checks
+  const regularPrice = product?.regularPrice || 0;
+  const subtotalAmount = regularPrice * itemCount;
+
   return (
     <div className="w-full h-12 flex items-center">
-      {itemCount ? (
+      {itemCount > 0 ? (
         <div className="text-sm w-full">
           <div className="flex items-center justify-between">
             <span className="text-xs text-darkColor/80">Quantity</span>
@@ -39,20 +55,20 @@ const AddToCartButton = ({ product, className }: Props) => {
           <div className="flex items-center justify-between border-t pt-1">
             <span className="text-xs font-semibold">Subtotal</span>
             <PriceFormatter
-              amount={product?.price ? product?.price * itemCount : 0}
+              amount={subtotalAmount}
             />
           </div>
         </div>
       ) : (
         <Button
           onClick={handleAddToCart}
-          disabled={isOutOfStock}
+          disabled={!product?._id}
           className={cn(
             "w-full bg-shop_dark_green/80 text-lightBg shadow-none border border-shop_dark_green/80 font-semibold tracking-wide text-white hover:bg-shop_dark_green hover:border-shop_dark_green hoverEffect",
             className
           )}
         >
-          <ShoppingBag /> {isOutOfStock ? "Out of Stock" : "Add to Cart"}
+          <ShoppingBag /> Add to Cart
         </Button>
       )}
     </div>

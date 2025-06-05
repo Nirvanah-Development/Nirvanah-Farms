@@ -12,6 +12,25 @@ import { FaRegQuestionCircle } from "react-icons/fa";
 import { FiShare2 } from "react-icons/fi";
 import { RxBorderSplit } from "react-icons/rx";
 import { TbTruckDelivery } from "react-icons/tb";
+import { PortableText } from '@portabletext/react';
+
+const components = {
+  marks: {
+    link: ({ children, value }: any) => {
+      const rel = value.target === '_blank' ? 'noopener noreferrer' : undefined
+      return (
+        <a
+          href={value.href}
+          target={value.target}
+          rel={rel}
+          className="text-blue-600 hover:underline"
+        >
+          {children}
+        </a>
+      )
+    },
+  },
+}
 
 const SingleProductPage = async ({
   params,
@@ -26,14 +45,14 @@ const SingleProductPage = async ({
   return (
     <Container className="flex flex-col md:flex-row gap-10 py-10">
       {product?.images && (
-        <ImageView images={product?.images} isStock={product?.stock} />
+        <ImageView images={product?.images} />
       )}
       <div className="w-full md:w-1/2 flex flex-col gap-5">
         <div className="space-y-1">
           <h2 className="text-2xl font-bold">{product?.name}</h2>
-          <p className="text-sm text-gray-600 tracking-wide">
-            {product?.description}
-          </p>
+          <div className="text-sm text-gray-600 tracking-wide">
+            {product?.description && <PortableText value={product.description} components={components} />}
+          </div>
           <div className="flex items-center gap-0.5 text-xs">
             {[...Array(5)].map((_, index) => (
               <StarIcon
@@ -48,15 +67,11 @@ const SingleProductPage = async ({
         </div>
         <div className="space-y-2 border-t border-b border-gray-200 py-5">
           <PriceView
-            price={product?.price}
-            discount={product?.discount}
+            regularPrice={product?.regularPrice}
+            salePrice={product?.salePrice}
+            status={product?.status}
             className="text-lg font-bold"
           />
-          <p
-            className={`px-4 py-1.5 text-sm text-center inline-block font-semibold rounded-lg ${product?.stock === 0 ? "bg-red-100 text-red-600" : "text-green-600 bg-green-100"}`}
-          >
-            {(product?.stock as number) > 0 ? "In Stock" : "Out of Stock"}
-          </p>
         </div>
         <div className="flex items-center gap-2.5 lg:gap-3">
           <AddToCartButton product={product} />
