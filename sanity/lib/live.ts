@@ -10,7 +10,7 @@ if (!token) {
 }
 
 export const { sanityFetch, SanityLive } = defineLive({
-  client,
+  client: client as any,
   serverToken: token,
   browserToken: token,
   fetchOptions: {
