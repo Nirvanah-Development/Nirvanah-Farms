@@ -46,6 +46,26 @@ export async function POST(request: NextRequest) {
       notes: orderData.notes || "",
     });
 
+    // Send order confirmation email asynchronously
+    try {
+      const emailResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/send-email`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ orderNumber: result.orderNumber }),
+      });
+
+      if (emailResponse.ok) {
+        console.log('Order confirmation email sent successfully');
+      } else {
+        console.error('Failed to send order confirmation email');
+      }
+    } catch (emailError) {
+      console.error('Error sending order confirmation email:', emailError);
+      // Don't fail the order creation if email fails
+    }
+
     return NextResponse.json({
       success: true,
       orderId: result._id,

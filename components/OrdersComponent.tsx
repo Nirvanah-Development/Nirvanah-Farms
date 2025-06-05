@@ -54,7 +54,7 @@ const OrdersComponent = ({ orders }: { orders: MY_ORDERS_QUERYResult }) => {
                     {order?.status && (
                       <span
                         className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                          order.status === "paid"
+                          order.status === "delivered"
                             ? "bg-green-100 text-green-800"
                             : "bg-yellow-100 text-yellow-800"
                         }`}
@@ -66,11 +66,9 @@ const OrdersComponent = ({ orders }: { orders: MY_ORDERS_QUERYResult }) => {
                   </TableCell>
 
                   <TableCell className="hidden sm:table-cell">
-                    {order?.invoice && (
-                      <p className="font-medium line-clamp-1">
-                        {order?.invoice ? order?.invoice?.number : "----"}
-                      </p>
-                    )}
+                    <p className="font-medium line-clamp-1">
+                      ----
+                    </p>
                   </TableCell>
                   <TableCell
                     onClick={(event) => {
@@ -94,7 +92,7 @@ const OrdersComponent = ({ orders }: { orders: MY_ORDERS_QUERYResult }) => {
         </TooltipProvider>
       </TableBody>
       <OrderDetailDialog
-        order={selectedOrder}
+        order={selectedOrder as any}
         isOpen={!!selectedOrder}
         onClose={() => setSelectedOrder(null)}
       />

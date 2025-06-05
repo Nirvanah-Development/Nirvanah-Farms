@@ -51,6 +51,9 @@ const SuccessPageContent = () => {
           <p className="text-sm text-green-600 font-medium">
             💰 Payment Method: Cash on Delivery (COD)
           </p>
+          <p className="text-sm text-blue-600 font-medium">
+            📧 Order confirmation email sent to your email address
+          </p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <Link

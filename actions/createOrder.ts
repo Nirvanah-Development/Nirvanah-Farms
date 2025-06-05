@@ -60,7 +60,7 @@ export async function createOrder(
       email: metadata.customerEmail,
       clerkUserId: metadata.clerkUserId,
       products: sanityProducts,
-      totalPrice: items.reduce((total, item) => total + ((item.product.price || 0) * item.quantity), 0),
+      totalPrice: items.reduce((total, item) => total + ((item.product.salePrice || item.product.regularPrice || 0) * item.quantity), 0),
       currency: "BDT",
       amountDiscount: 0,
       status: "pending",
