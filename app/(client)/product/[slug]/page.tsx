@@ -12,16 +12,22 @@ import { FaRegQuestionCircle } from "react-icons/fa";
 import { FiShare2 } from "react-icons/fi";
 import { RxBorderSplit } from "react-icons/rx";
 import { TbTruckDelivery } from "react-icons/tb";
-import { PortableText } from '@portabletext/react';
+import { PortableText, PortableTextMarkComponentProps } from '@portabletext/react';
+
+interface LinkMarkValue {
+  _type: 'link';
+  href?: string;
+  target?: string;
+}
 
 const components = {
   marks: {
-    link: ({ children, value }: any) => {
-      const rel = value.target === '_blank' ? 'noopener noreferrer' : undefined
+    link: ({ children, value }: PortableTextMarkComponentProps<LinkMarkValue>) => {
+      const rel = value?.target === '_blank' ? 'noopener noreferrer' : undefined
       return (
         <a
-          href={value.href}
-          target={value.target}
+          href={value?.href}
+          target={value?.target}
           rel={rel}
           className="text-blue-600 hover:underline"
         >

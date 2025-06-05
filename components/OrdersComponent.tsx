@@ -1,6 +1,6 @@
 "use client";
 
-import { MY_ORDERS_QUERYResult } from "@/sanity.types";
+import { MY_ORDERS_QUERYResult, Order } from "@/sanity.types";
 import { TableBody, TableCell, TableRow } from "./ui/table";
 import {
   Tooltip,
@@ -92,7 +92,7 @@ const OrdersComponent = ({ orders }: { orders: MY_ORDERS_QUERYResult }) => {
         </TooltipProvider>
       </TableBody>
       <OrderDetailDialog
-        order={selectedOrder as any}
+        order={selectedOrder as Order | null}
         isOpen={!!selectedOrder}
         onClose={() => setSelectedOrder(null)}
       />

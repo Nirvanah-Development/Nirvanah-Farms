@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import { createOrder, OrderMetadata } from "@/actions/createOrder";
 import { Address } from "@/types/address";
 import CartSidebar from "@/components/CartSidebar";
+import Image from "next/image";
 
 interface GuestInfo {
   name: string;
@@ -25,7 +26,7 @@ interface GuestInfo {
 export default function CartPage() {
   const { isSignedIn, user } = useUser();
   const router = useRouter();
-  const { items, resetCart } = useCartStore();
+  const { resetCart } = useCartStore();
   const [isLoading, setIsLoading] = useState(false);
   const [guestInfo, setGuestInfo] = useState<GuestInfo>({
     name: "",
@@ -129,9 +130,11 @@ export default function CartPage() {
                   {items.map((item) => (
                     <div key={item.product._id} className="flex items-center gap-4 p-4 border rounded-lg">
                       <div className="w-20 h-20 relative">
-                        <img
+                        <Image
                           src={item.product.image}
                           alt={item.product.name}
+                          width={80}
+                          height={80}
                           className="object-cover rounded-md"
                           />
                         </div>

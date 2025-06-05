@@ -1,6 +1,4 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import PriceFormatter from "@/components/PriceFormatter";
 import { Order } from "@/sanity.types";
 
@@ -43,31 +41,31 @@ const OrderDetailDialog: React.FC<OrderDetailsDialogProps> = ({
             <div className="mt-4">
               <h3 className="font-semibold mb-2">Delivery Address:</h3>
               <p>{order.address.name}</p>
-              <p>{order.address.address}</p>
+              <p>{order.address.fullAddress}</p>
               <p>
-                {order.address.city}, {order.address.state} {order.address.zip}
+                {order.address.thana}, {order.address.district}
               </p>
             </div>
           )}
         </div>
         <div className="mt-4 text-right flex items-center justify-end">
           <div className="w-44 flex flex-col gap-1">
-            {order?.amountDiscount !== 0 && (
+            {order?.discountAmount !== 0 && (
               <div className="w-full flex items-center justify-between">
                 <strong>Discount: </strong>
                 <PriceFormatter
-                  amount={order?.amountDiscount}
+                  amount={order?.discountAmount}
                   className="text-black font-bold"
                 />
               </div>
             )}
-            {order?.amountDiscount !== 0 && (
+            {order?.discountAmount !== 0 && (
               <div className="w-full flex items-center justify-between">
                 <strong>Subtotal: </strong>
                 <PriceFormatter
                   amount={
                     (order?.totalPrice as number) +
-                    (order?.amountDiscount as number)
+                    (order?.discountAmount as number)
                   }
                   className="text-black font-bold"
                 />

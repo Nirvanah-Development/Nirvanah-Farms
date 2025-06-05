@@ -13,13 +13,12 @@ import { useCartStore } from "@/store/cart";
 import { useCart } from "@/contexts/CartContext";
 import { Separator } from "@/components/ui/separator";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
 import { urlFor } from "@/sanity/lib/image";
 
 export default function CartSidebar() {
   const { isCartOpen, closeCart } = useCart();
   const router = useRouter();
-  const { items, removeItem, updateQuantity, resetCart } = useCartStore();
+  const { items, removeItem, updateQuantity } = useCartStore();
 
   const subtotal = items.reduce(
     (sum, item) => {

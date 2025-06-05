@@ -21,15 +21,15 @@ const ProductGrid = ({ categories }: Props) => {
   const [loading, setLoading] = useState(false);
   const [selectedTab, setSelectedTab] = useState(ALL_FRUITS);
   
-  const query = selectedTab === ALL_FRUITS
-    ? `*[_type == "product"] | order(name asc){...,"categories": categories[]->title}`
-    : `*[_type == "product" && categories[]->title match $category] | order(name asc){...,"categories": categories[]->title}`;
-  const params = selectedTab === ALL_FRUITS ? {} : { category: selectedTab };
-
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       try {
+        const query = selectedTab === ALL_FRUITS
+          ? `*[_type == "product"] | order(name asc){...,"categories": categories[]->title}`
+          : `*[_type == "product" && categories[]->title match $category] | order(name asc){...,"categories": categories[]->title}`;
+        const params = selectedTab === ALL_FRUITS ? {} : { category: selectedTab };
+        
         const response = await client.fetch(query, params);
         setProducts(await response);
       } catch (error) {
