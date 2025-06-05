@@ -13,31 +13,10 @@ export const orderType = defineType({
       type: "string",
       validation: (Rule) => Rule.required(),
     }),
-    {
-      name: "invoice",
-      type: "object",
-      fields: [
-        { name: "id", type: "string" },
-        { name: "number", type: "string" },
-        { name: "hosted_invoice_url", type: "url" },
-      ],
-    },
-    defineField({
-      name: "stripeCheckoutSessionId",
-      title: "Stripe Checkout Session ID",
-      type: "string",
-    }),
-    defineField({
-      name: "stripeCustomerId",
-      title: "Stripe Customer ID",
-      type: "string",
-      validation: (Rule) => Rule.required(),
-    }),
     defineField({
       name: "clerkUserId",
       title: "Store User ID",
       type: "string",
-      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "customerName",
@@ -50,12 +29,6 @@ export const orderType = defineType({
       title: "Customer Email",
       type: "string",
       validation: (Rule) => Rule.required().email(),
-    }),
-    defineField({
-      name: "stripePaymentIntentId",
-      title: "Stripe Payment Intent ID",
-      type: "string",
-      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "products",
@@ -134,8 +107,6 @@ export const orderType = defineType({
         list: [
           { title: "Pending", value: "pending" },
           { title: "Processing", value: "processing" },
-          { title: "Paid", value: "paid" },
-          { title: "Shipped", value: "shipped" },
           { title: "Out for Delivery", value: "out_for_delivery" },
           { title: "Delivered", value: "delivered" },
           { title: "Cancelled", value: "cancelled" },

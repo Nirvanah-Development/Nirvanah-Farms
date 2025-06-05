@@ -39,11 +39,11 @@
     "react-hot-toast": "^2.5.2",
     "react-icons": "^5.5.0",
     "sanity": "^3.90.0",
-    "stripe": "^18.0.0",
+    "sonner": "^2.0.5",
     "styled-components": "^6.1.18",
     "tailwind-merge": "^3.0.2",
     "tailwindcss-animate": "^1.0.7",
-    "zustand": "^5.0.3"
+    "zustand": "^5.0.5"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

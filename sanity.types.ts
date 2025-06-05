@@ -200,47 +200,30 @@ export type Author = {
   }>;
 };
 
-export type Order = {
+export interface Order {
   _id: string;
   _type: "order";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  orderNumber?: string;
-  invoice?: {
-    id?: string;
-    number?: string;
-    hosted_invoice_url?: string;
-  };
-  stripeCheckoutSessionId?: string;
-  stripeCustomerId?: string;
+  orderNumber: string;
   clerkUserId?: string;
-  customerName?: string;
-  email?: string;
-  stripePaymentIntentId?: string;
-  products?: Array<{
-    product?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "product";
-    };
-    quantity?: number;
-    _key: string;
-  }>;
-  totalPrice?: number;
-  currency?: string;
-  amountDiscount?: number;
-  address?: {
-    state?: string;
-    zip?: string;
-    city?: string;
-    address?: string;
-    name?: string;
+  customerName: string;
+  email: string;
+  products: {
+    product: Product;
+    quantity: number;
+  }[];
+  totalPrice: number;
+  currency: string;
+  amountDiscount: number;
+  address: {
+    state: string;
+    zip: string;
+    city: string;
+    address: string;
+    name: string;
   };
-  status?: "pending" | "processing" | "paid" | "shipped" | "out_for_delivery" | "delivered" | "cancelled";
-  orderDate?: string;
-};
+  status: "pending" | "processing" | "out_for_delivery" | "delivered" | "cancelled";
+  orderDate: string;
+}
 
 export type Product = {
   _id: string;

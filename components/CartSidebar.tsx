@@ -9,58 +9,74 @@ import {
 import { Button } from "@/components/ui/button";
 import { Trash } from "lucide-react";
 import Image from "next/image";
-import useStore from "@/store";
-import PriceFormatter from "@/components/PriceFormatter";
-import QuantityButtons from "@/components/QuantityButtons";
-import { cn } from "@/lib/utils";
+import { useCartStore } from "@/store/cart";
+import { useCart } from "@/contexts/CartContext";
+import { Separator } from "@/components/ui/separator";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { urlFor } from "@/sanity/lib/image";
 
-interface CartSidebarProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-}
+export default function CartSidebar() {
+  const { isCartOpen, closeCart } = useCart();
+  const router = useRouter();
+  const { items, removeItem, updateQuantity, resetCart } = useCartStore();
 
-const CartSidebar: React.FC<CartSidebarProps> = ({ open, onOpenChange }) => {
-  const { getGroupedItems, getTotalPrice, getItemCount, deleteCartProduct } =
-    useStore();
-  const groupedItems = getGroupedItems();
+  const subtotal = items.reduce(
+    (sum, item) => {
+      const regularPrice = item.product.regularPrice || 0;
+      const salePrice = item.product.salePrice || 0;
+      const price = item.product.status === 'sale' ? salePrice : regularPrice;
+      const quantity = item.quantity || 0;
+      return sum + (price * quantity);
+    },
+    0
+  );
+
+  const discount = 0; // You can implement discount logic here
+  const total = subtotal - discount;
+
+  const handleCheckout = () => {
+    closeCart();
+    router.push("/checkout");
+  };
 
   return (
-    <Sheet open={open} onOpenChange={onOpenChange}>
+    <Sheet open={isCartOpen} onOpenChange={closeCart}>
       <SheetContent
         side="right"
-        className={cn(
-          "flex flex-col h-full p-0",
-          "w-full max-w-[90vw] sm:max-w-[400px] md:max-w-[500px] lg:max-w-[500px]"
-        )}
+        className="flex flex-col h-full p-0 w-full max-w-[90vw] sm:max-w-[400px] md:max-w-[500px] lg:max-w-[500px]"
       >
         <SheetHeader className="p-6 border-b">
           <SheetTitle>Shopping Cart</SheetTitle>
         </SheetHeader>
         <div className="flex-1 overflow-y-auto p-6">
-          {groupedItems.length === 0 ? (
+          {items.length === 0 ? (
             <div className="text-center text-gray-500 mt-10">
               Your cart is empty.
             </div>
           ) : (
-            groupedItems.map(({ product }) => {
-              const itemCount = getItemCount(product._id);
-              // Use your urlFor function to get the image URL
+            items.map((item) => {
+              // Use the correct image handling logic for Product type
               const imageUrl =
-                product.images && product.images[0]
-                  ? typeof product.images[0] === "string"
-                    ? product.images[0]
-                    : product.images[0].asset
-                      ? require("@/sanity/lib/image")
-                          .urlFor(product.images[0])
-                          .url()
-                      : "/placeholder.png"
-                  : "/placeholder.png";
+                item.product.images && item.product.images[0]
+                  ? typeof item.product.images[0] === "string"
+                    ? item.product.images[0]
+                    : item.product.images[0].asset
+                      ? urlFor(item.product.images[0]).url()
+                      : "https://via.placeholder.com/80x80?text=No+Image"
+                  : "https://via.placeholder.com/80x80?text=No+Image";
+              
+              const regularPrice = item.product.regularPrice || 0;
+              const salePrice = item.product.salePrice || 0;
+              const price = item.product.status === 'sale' ? salePrice : regularPrice;
+              const quantity = item.quantity || 0;
+              
               return (
-                <div key={product._id} className="flex items-start gap-4 mb-6">
+                <div key={item.product._id} className="flex items-start gap-4 mb-6">
                   <div>
                     <Image
                       src={imageUrl}
-                      alt={product.name || "Product"}
+                      alt={item.product.name || "Product"}
                       width={80}
                       height={80}
                       className="rounded border object-cover w-20 h-20"
@@ -69,20 +85,34 @@ const CartSidebar: React.FC<CartSidebarProps> = ({ open, onOpenChange }) => {
 
                   <div className="flex-1">
                     <div className="font-semibold text-base">
-                      {product.name}
+                      {item.product.name || "Unnamed Product"}
                     </div>
                     <div className="flex flex-col items-start justify-between">
                       <div className="font-bold text-green-600 text-lg whitespace-nowrap">
-                        <PriceFormatter
-                          amount={(product.regularPrice || 0) * itemCount}
-                        />
+                        ${(price * quantity).toFixed(2)}
                       </div>
                       <div className="flex items-center gap-2 mt-2">
-                        <QuantityButtons product={product} />
+                        <div className="flex items-center gap-2">
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            onClick={() => updateQuantity(item.product._id, Math.max(0, quantity - 1))}
+                          >
+                            -
+                          </Button>
+                          <span>{quantity}</span>
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            onClick={() => updateQuantity(item.product._id, quantity + 1)}
+                          >
+                            +
+                          </Button>
+                        </div>
                         <Button
                           variant="ghost"
                           size="icon"
-                          onClick={() => deleteCartProduct(product._id)}
+                          onClick={() => removeItem(item.product._id)}
                           className="text-gray-400 hover:text-red-600"
                           aria-label="Remove"
                         >
@@ -97,19 +127,36 @@ const CartSidebar: React.FC<CartSidebarProps> = ({ open, onOpenChange }) => {
           )}
         </div>
         <div className="p-6 border-t">
-          <div className="flex items-center justify-between mb-4">
-            <span className="font-semibold text-lg">Subtotal</span>
-            <span className="font-bold text-lg">
-              <PriceFormatter amount={getTotalPrice()} />
-            </span>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <span>Subtotal</span>
+              <span>
+                ${subtotal.toFixed(2)}
+              </span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span>Discount</span>
+              <span>
+                ${discount.toFixed(2)}
+              </span>
+            </div>
+            <Separator />
+            <div className="flex items-center justify-between font-semibold text-lg">
+              <span>Total</span>
+              <span>
+                ${total.toFixed(2)}
+              </span>
+            </div>
+            <Button 
+              className="w-full bg-shop_dark_green text-white font-semibold rounded-md"
+              onClick={handleCheckout}
+              disabled={items.length === 0}
+            >
+              Proceed to Checkout
+            </Button>
           </div>
-          <Button className="w-full bg-shop_dark_green text-white font-semibold rounded-md">
-            Order Cash on Delivery
-          </Button>
         </div>
       </SheetContent>
     </Sheet>
   );
-};
-
-export default CartSidebar;
+}
