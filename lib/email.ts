@@ -1,5 +1,6 @@
 import { Resend } from 'resend';
 import { Order } from '@/sanity.types';
+import nodemailer from 'nodemailer';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -218,11 +219,9 @@ export async function sendOrderConfirmationEmail(data: EmailData) {
 
 // Fallback email service using nodemailer (in case Resend fails)
 export async function sendOrderConfirmationEmailFallback(data: EmailData) {
-  const nodemailer = require('nodemailer');
-  
   try {
     // Create transporter (configure based on your email service)
-    const transporter = nodemailer.createTransporter({
+    const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST || 'smtp.gmail.com',
       port: parseInt(process.env.SMTP_PORT || '587'),
       secure: false,
