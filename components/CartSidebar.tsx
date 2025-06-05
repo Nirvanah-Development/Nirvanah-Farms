@@ -89,7 +89,7 @@ export default function CartSidebar() {
                     </div>
                     <div className="flex flex-col items-start justify-between">
                       <div className="font-bold text-green-600 text-lg whitespace-nowrap">
-                        ${(price * quantity).toFixed(2)}
+                        Tk {(price * quantity).toFixed(2)}
                       </div>
                       <div className="flex items-center gap-2 mt-2">
                         <div className="flex items-center gap-2">
@@ -131,20 +131,20 @@ export default function CartSidebar() {
             <div className="flex items-center justify-between">
               <span>Subtotal</span>
               <span>
-                ${subtotal.toFixed(2)}
+                Tk {subtotal.toFixed(2)}
               </span>
             </div>
             <div className="flex items-center justify-between">
               <span>Discount</span>
               <span>
-                ${discount.toFixed(2)}
+                Tk {discount.toFixed(2)}
               </span>
             </div>
             <Separator />
             <div className="flex items-center justify-between font-semibold text-lg">
               <span>Total</span>
               <span>
-                ${total.toFixed(2)}
+                Tk {total.toFixed(2)}
               </span>
             </div>
             <Button 
@@ -152,7 +152,7 @@ export default function CartSidebar() {
               onClick={handleCheckout}
               disabled={items.length === 0}
             >
-              Proceed to Checkout
+              Order Cash on Delivery
             </Button>
           </div>
         </div>
