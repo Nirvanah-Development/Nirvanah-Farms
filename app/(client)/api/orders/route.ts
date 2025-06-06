@@ -49,9 +49,12 @@ export async function POST(request: NextRequest) {
     // Send order confirmation email asynchronously
     try {
       const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 
-                   process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 
-                   'http://localhost:3000';
-    const emailResponse = await fetch(`${baseUrl}/api/send-email`, {
+                   (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 
+                   'http://localhost:3000');
+      
+      console.log('🔗 Using baseUrl for email API:', baseUrl);
+      
+      const emailResponse = await fetch(`${baseUrl}/api/send-email`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

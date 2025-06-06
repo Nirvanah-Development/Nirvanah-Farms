@@ -25,6 +25,7 @@ function getShippingMethodLabel(shippingMethod?: string): string {
 
 export async function sendOrderConfirmationEmail(data: EmailData) {
   try {
+    console.log('📧 Attempting to send email with Resend...');
     const { order, customerEmail, customerName } = data;
     
     // Calculate totals
@@ -204,11 +205,11 @@ export async function sendOrderConfirmationEmail(data: EmailData) {
     });
 
     if (error) {
-      console.error('Error sending email:', error);
-      throw new Error(`Failed to send email: ${error.message}`);
+      console.error('❌ Resend email failed:', error);
+      throw new Error(`Resend failed: ${error.message}`);
     }
 
-    console.log('Order confirmation email sent successfully:', emailResult);
+    console.log('✅ Resend email sent successfully:', emailResult);
     return { success: true, emailId: emailResult?.id };
 
   } catch (error) {
@@ -218,22 +219,55 @@ export async function sendOrderConfirmationEmail(data: EmailData) {
 }
 
 // Fallback email service using nodemailer (in case Resend fails)
-export async function sendOrderConfirmationEmailFallback(data: EmailData) {
+export async function sendOrderConfirmationEmailFallback(data: EmailData): Promise<{ success: boolean; messageId?: string }> {
   try {
-    // Create transporter (configure based on your email service)
+    console.log('🔄 Attempting SMTP fallback email sending...');
+    
+    // Validate SMTP environment variables
+    if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
+      const missingVars = [];
+      if (!process.env.SMTP_USER) missingVars.push('SMTP_USER');
+      if (!process.env.SMTP_PASS) missingVars.push('SMTP_PASS');
+      
+      console.error('❌ Missing SMTP environment variables:', missingVars);
+      throw new Error(`Missing SMTP environment variables: ${missingVars.join(', ')}`);
+    }
+
+    console.log('✅ SMTP environment variables found');
+    console.log('📧 SMTP Host:', process.env.SMTP_HOST || 'smtp.gmail.com');
+    console.log('🔌 SMTP Port:', process.env.SMTP_PORT || '587');
+    console.log('👤 SMTP User:', process.env.SMTP_USER);
+
+    // Create transporter with enhanced configuration
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST || 'smtp.gmail.com',
       port: parseInt(process.env.SMTP_PORT || '587'),
-      secure: false,
+      secure: false, // true for 465, false for other ports
       auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS,
       },
+      tls: {
+        rejectUnauthorized: false, // Accept self-signed certificates
+      },
+      debug: true, // Enable debug mode
+      logger: true, // Enable logging
     });
+
+    console.log('🔧 SMTP transporter created');
+
+    // Verify SMTP connection
+    try {
+      await transporter.verify();
+      console.log('✅ SMTP connection verified successfully');
+    } catch (verifyError: any) {
+      console.error('❌ SMTP connection verification failed:', verifyError);
+      throw new Error(`SMTP connection failed: ${verifyError.message}`);
+    }
 
     const { order, customerEmail, customerName } = data;
 
-    // Simple text version for fallback
+    // Plain text version for fallback
     const textContent = `
 Dear ${customerName},
 
@@ -249,18 +283,32 @@ Best regards,
 Your Store Team
     `;
 
-    await transporter.sendMail({
+    console.log('📬 Sending email to:', customerEmail);
+
+    const mailOptions = {
       from: process.env.EMAIL_FROM || 'Your Store <noreply@yourstore.com>',
       to: customerEmail,
-      subject: `Order Confirmation - ${order.orderNumber}`,
+      subject: `Order Confirmation - ${order.orderNumber} | আপনার অর্ডার নিশ্চিত হয়েছে`,
       text: textContent,
-    });
+    };
 
-    console.log('Fallback email sent successfully');
-    return { success: true };
+    const result = await transporter.sendMail(mailOptions);
+    console.log('✅ Fallback email sent successfully:', result.messageId);
     
-  } catch (error) {
-    console.error('Fallback email service also failed:', error);
-    throw error;
+    return { success: true, messageId: result.messageId };
+    
+  } catch (error: any) {
+    console.error('❌ Fallback email service failed:', error);
+    
+    // Provide more detailed error information
+    if (error.code === 'EAUTH') {
+      console.error('🔐 Authentication failed - check SMTP_USER and SMTP_PASS');
+    } else if (error.code === 'ECONNECTION') {
+      console.error('🔌 Connection failed - check SMTP_HOST and SMTP_PORT');
+    } else if (error.code === 'ETIMEDOUT') {
+      console.error('⏱️ Connection timed out - check network connection');
+    }
+    
+    throw new Error(`SMTP fallback failed: ${error.message}`);
   }
 }

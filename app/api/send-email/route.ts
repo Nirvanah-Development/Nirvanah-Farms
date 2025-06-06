@@ -74,6 +74,7 @@ export async function POST(request: NextRequest) {
 
     try {
       // Try sending with Resend first
+      console.log('🚀 Starting email sending process for order:', orderNumber);
       const result = await sendOrderConfirmationEmail(emailData);
       
       return NextResponse.json({
@@ -84,20 +85,24 @@ export async function POST(request: NextRequest) {
       });
       
     } catch (resendError) {
-      console.error("Resend failed, trying fallback:", resendError);
+      console.error("❌ Resend failed, trying SMTP fallback:", resendError);
       
       try {
         // Fallback to nodemailer
-        await sendOrderConfirmationEmailFallback(emailData);
+        console.log('🔄 Attempting SMTP fallback...');
+        const fallbackResult = await sendOrderConfirmationEmailFallback(emailData);
         
         return NextResponse.json({
           success: true,
-          message: "Order confirmation email sent successfully (fallback)",
+          message: "Order confirmation email sent successfully (SMTP fallback)",
+          messageId: fallbackResult.messageId,
           service: "nodemailer"
         });
         
       } catch (fallbackError) {
-        console.error("Both email services failed:", fallbackError);
+        console.error("❌ Both email services failed:");
+        console.error("Resend error:", resendError);
+        console.error("SMTP fallback error:", fallbackError);
         
         return NextResponse.json(
           { 
