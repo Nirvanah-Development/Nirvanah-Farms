@@ -345,7 +345,7 @@ export default function CheckoutPage() {
                         onValueChange={(value) => handleInputChange("district", value)}
                       >
                         <SelectTrigger className={errors.district ? "border-red-500" : ""}>
-                          <SelectValue placeholder="Dhaka City" />
+                          <SelectValue placeholder="Select District" />
                         </SelectTrigger>
                         <SelectContent>
                           {districts.map((district) => (
@@ -369,7 +369,7 @@ export default function CheckoutPage() {
                         onValueChange={(value) => handleInputChange("thana", value)}
                       >
                         <SelectTrigger className={errors.thana ? "border-red-500" : ""}>
-                          <SelectValue placeholder="Dhanmondi" />
+                          <SelectValue placeholder="Select Thana" />
                         </SelectTrigger>
                         <SelectContent>
                           {thanas.map((thana) => (
