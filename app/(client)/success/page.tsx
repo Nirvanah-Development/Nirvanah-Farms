@@ -1,6 +1,6 @@
 "use client";
 
-import useStore from "@/store";
+import { useCartStore } from "@/store/cart";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect } from "react";
 import { motion } from "motion/react";
@@ -8,7 +8,7 @@ import { Check, Home, Package, ShoppingBag } from "lucide-react";
 import Link from "next/link";
 
 const SuccessPageContent = () => {
-  const { resetCart } = useStore();
+  const { resetCart } = useCartStore();
   const searchParams = useSearchParams();
   const orderNumber = searchParams.get("orderNumber");
   const orderId = searchParams.get("orderId");

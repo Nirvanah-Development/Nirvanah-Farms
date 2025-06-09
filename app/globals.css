@@ -17,6 +17,7 @@
   --color-lightOrange: #fca99b;
   --color-shop_light_green: #3b9c3c;
   --color-deal-bg: #f1f3f8;
+  --breakpoint-xs: 475px;
 }
 
 :root {
