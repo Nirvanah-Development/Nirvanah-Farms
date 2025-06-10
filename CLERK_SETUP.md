@@ -69,8 +69,51 @@ import SignIn from "@/components/SignIn";
 <SignIn mode="redirect" redirectUrl="/admin" />
 ```
 
+## Admin Access Control
+
+### Setting Up Admin Role in Clerk Dashboard
+
+1. **Go to Clerk Dashboard** → **User & Authentication** → **Roles**
+2. **Create "admin" role** if it doesn't exist
+3. **Go to Users** → Select your admin user → **Public metadata**
+4. **Add role metadata**:
+   ```json
+   {
+     "role": "admin"
+   }
+   ```
+
+### Disable Public Sign-Up (Recommended)
+
+1. **Go to Clerk Dashboard** → **User & Authentication** → **Restrictions**
+2. **Disable "Allow sign-ups"**
+3. This prevents unauthorized users from creating accounts
+
+### Alternative: Email Whitelist Approach
+
+If you prefer email-based access control, edit `lib/admin-utils.ts`:
+
+```typescript
+const ADMIN_EMAILS = [
+  "your-admin@email.com",
+  "another-admin@email.com"
+];
+
+// Change the checkAdminAccess function to use email approach
+export async function checkAdminAccess(): Promise<boolean> {
+  return await checkAdminEmail();
+}
+```
+
+### Security Features Implemented
+
+- **Role-based access control** - Only users with "admin" role can access
+- **Server-side validation** - All admin routes and actions are protected
+- **Unauthorized page** - Non-admin users are redirected to `/unauthorized`
+- **Smart navigation** - Admin links only show for authorized users
+
 ## Next Steps
 
-- Configure user roles in Clerk dashboard if needed
-- Set up email templates for authentication flows
-- Add role-based access control (uncomment code in admin layout) 
+- Set up your admin role in Clerk dashboard (see above)
+- Test the admin access with your admin user
+- Invite additional admin users through Clerk dashboard if needed 

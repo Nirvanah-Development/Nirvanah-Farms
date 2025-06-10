@@ -5,9 +5,13 @@ import { useUser } from "@clerk/nextjs";
 import { Shield } from "lucide-react";
 
 const AdminLogin = () => {
-  const { isSignedIn } = useUser();
+  const { isSignedIn, user } = useUser();
+  
+  // Check if user has admin role
+  const userRole = user?.publicMetadata?.role;
+  const isAdmin = userRole === "admin";
 
-  if (isSignedIn) {
+  if (isSignedIn && isAdmin) {
     return (
       <Link 
         href="/admin" 
@@ -19,6 +23,12 @@ const AdminLogin = () => {
     );
   }
 
+  if (isSignedIn && !isAdmin) {
+    // User is signed in but not an admin - don't show admin link
+    return null;
+  }
+
+  // Not signed in - show admin login (they'll be checked for role after signing in)
   return (
     <Link 
       href="/sign-in" 

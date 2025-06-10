@@ -2,6 +2,7 @@ import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { AdminSidebar } from "./components/AdminSidebar";
 import { Toaster } from "sonner";
+import { checkAdminAccess } from "@/lib/admin-utils";
 
 export default async function AdminLayout({
   children,
@@ -14,11 +15,12 @@ export default async function AdminLayout({
     redirect("/sign-in");
   }
 
-  // Optional: Add role-based access control
-  // const user = await currentUser();
-  // if (!user?.publicMetadata?.isAdmin) {
-  //   redirect("/");
-  // }
+  // Check if user has admin access
+  const isAdmin = await checkAdminAccess();
+  
+  if (!isAdmin) {
+    redirect("/");
+  }
 
   return (
     <div className="flex h-screen bg-gray-50">
