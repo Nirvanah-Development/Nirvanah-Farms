@@ -18,7 +18,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { MoreVertical, Edit, Trash2 } from "lucide-react";
+import { MoreVertical, Edit, Trash2, MapPin, Users, Building, Calendar, Target, Package } from "lucide-react";
 import { BulkActions } from "./BulkActions";
 import { DeleteOfficeDialog } from "./DeleteOfficeDialog";
 import Link from "next/link";
@@ -32,7 +32,7 @@ interface Office {
   officeCode: string;
   employees: number;
   charitable: number;
-  orders?: string;
+  orders?: number;
   target?: string;
   status: string;
   shipDate: string;
@@ -81,103 +81,221 @@ export function OfficeTable({ offices }: OfficeTableProps) {
     );
   };
 
+  // Mobile Card Component
+  const MobileOfficeCard = ({ office }: { office: Office }) => (
+    <div className="border-b border-gray-200 p-4 last:border-b-0">
+      <div className="flex items-start justify-between mb-3">
+        <div className="flex items-center gap-3 flex-1">
+          <Checkbox
+            checked={selectedOffices.includes(office._id)}
+            onCheckedChange={() => toggleOffice(office._id)}
+          />
+          <div className="flex items-center gap-3 flex-1">
+            {office.image && (
+              <div className="w-10 h-10 bg-gray-200 rounded flex items-center justify-center">
+                <span className="text-lg">🏢</span>
+              </div>
+            )}
+            <div className="flex-1 min-w-0">
+              <h3 className="font-medium text-gray-900 truncate">{office.officeName}</h3>
+              <p className="text-sm text-gray-500 font-mono">{office.officeCode}</p>
+            </div>
+          </div>
+        </div>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="sm">
+              <MoreVertical className="w-4 h-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem asChild>
+              <Link href={`/admin/offices/${office._id}/edit`}>
+                <Edit className="w-4 h-4 mr-2" />
+                Edit
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              className="text-red-600"
+              onClick={() => setDeleteOfficeId(office._id)}
+            >
+              <Trash2 className="w-4 h-4 mr-2" />
+              Delete
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+
+      <div className="space-y-2">
+        <div className="flex items-center gap-2 text-sm text-gray-600">
+          <MapPin className="w-4 h-4" />
+          <span>{office.location}</span>
+        </div>
+        
+        <div className="grid grid-cols-2 gap-4 text-sm">
+          <div className="flex items-center gap-2 text-gray-600">
+            <Users className="w-4 h-4" />
+            <span>{office.employees} employees</span>
+          </div>
+          <div className="flex items-center gap-2 text-gray-600">
+            <Building className="w-4 h-4" />
+            <span>{office.charitable} charitable</span>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-4 text-sm">
+          <div className="flex items-center gap-2 text-gray-600">
+            <Package className="w-4 h-4" />
+            <span>{office.orders || "-"} orders</span>
+          </div>
+          <div className="flex items-center gap-2 text-gray-600">
+            <Target className="w-4 h-4" />
+            <span>{office.target || "-"} target</span>
+          </div>
+        </div>
+
+        <div className="flex items-center justify-between pt-2">
+          <div className="flex items-center gap-2">
+            <Calendar className="w-4 h-4 text-gray-400" />
+            <span className="text-sm text-gray-600">{format(new Date(office.shipDate), "d MMM")}</span>
+          </div>
+          {getStatusBadge(office.status)}
+        </div>
+
+        {office.locationUrl && (
+          <a
+            href={office.locationUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs text-blue-600 hover:underline block truncate"
+          >
+            {office.locationUrl}
+          </a>
+        )}
+      </div>
+    </div>
+  );
+
   return (
     <>
-      <div className="p-4 border-b">
+      <div className="p-3 sm:p-4 border-b">
         <BulkActions
           selectedOffices={selectedOffices}
           onComplete={() => setSelectedOffices([])}
         />
       </div>
 
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="w-12">
-              <Checkbox
-                checked={selectedOffices.length === offices.length && offices.length > 0}
-                onCheckedChange={toggleAll}
-              />
-            </TableHead>
-            <TableHead>office name</TableHead>
-            <TableHead>Location</TableHead>
-            <TableHead className="text-center">employee</TableHead>
-            <TableHead className="text-center">charitable</TableHead>
-            <TableHead className="text-center">office code</TableHead>
-            <TableHead className="text-center">orders</TableHead>
-            <TableHead className="text-center">target</TableHead>
-            <TableHead>status</TableHead>
-            <TableHead>ship date</TableHead>
-            <TableHead className="w-12"></TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
+      {/* Mobile View */}
+      <div className="block lg:hidden">
+        <div className="p-3 sm:p-4 border-b bg-gray-50">
+          <div className="flex items-center justify-between">
+            <span className="text-sm font-medium text-gray-700">
+              {offices.length} offices
+            </span>
+            <Checkbox
+              checked={selectedOffices.length === offices.length && offices.length > 0}
+              onCheckedChange={toggleAll}
+            />
+          </div>
+        </div>
+        <div className="divide-y divide-gray-200">
           {offices.map((office) => (
-            <TableRow key={office._id}>
-              <TableCell>
-                <Checkbox
-                  checked={selectedOffices.includes(office._id)}
-                  onCheckedChange={() => toggleOffice(office._id)}
-                />
-              </TableCell>
-              <TableCell className="font-medium">
-                <div className="flex items-center gap-3">
-                  {office.image && (
-                    <div className="w-10 h-10 bg-gray-200 rounded flex items-center justify-center">
-                      <span className="text-lg">🏢</span>
-                    </div>
-                  )}
-                  <div>
-                    <div>{office.officeName}</div>
-                    {office.locationUrl && (
-                      <a
-                        href={office.locationUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-xs text-blue-600 hover:underline"
-                      >
-                        {office.locationUrl}
-                      </a>
-                    )}
-                  </div>
-                </div>
-              </TableCell>
-              <TableCell>{office.location}</TableCell>
-              <TableCell className="text-center">{office.employees}</TableCell>
-              <TableCell className="text-center">{office.charitable}</TableCell>
-              <TableCell className="text-center font-mono">{office.officeCode}</TableCell>
-              <TableCell className="text-center">{office.orders || "-"}</TableCell>
-              <TableCell className="text-center">{office.target || "-"}</TableCell>
-              <TableCell>{getStatusBadge(office.status)}</TableCell>
-              <TableCell>{format(new Date(office.shipDate), "d MMM")}</TableCell>
-              <TableCell>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="sm">
-                      <MoreVertical className="w-4 h-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem asChild>
-                      <Link href={`/admin/offices/${office._id}/edit`}>
-                        <Edit className="w-4 h-4 mr-2" />
-                        Edit
-                      </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                      className="text-red-600"
-                      onClick={() => setDeleteOfficeId(office._id)}
-                    >
-                      <Trash2 className="w-4 h-4 mr-2" />
-                      Delete
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </TableCell>
-            </TableRow>
+            <MobileOfficeCard key={office._id} office={office} />
           ))}
-        </TableBody>
-      </Table>
+        </div>
+      </div>
+
+      {/* Desktop Table View */}
+      <div className="hidden lg:block overflow-x-auto">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="w-12">
+                <Checkbox
+                  checked={selectedOffices.length === offices.length && offices.length > 0}
+                  onCheckedChange={toggleAll}
+                />
+              </TableHead>
+              <TableHead>office name</TableHead>
+              <TableHead>Location</TableHead>
+              <TableHead className="text-center">employee</TableHead>
+              <TableHead className="text-center">charitable</TableHead>
+              <TableHead className="text-center">office code</TableHead>
+              <TableHead className="text-center">orders</TableHead>
+              <TableHead className="text-center">target</TableHead>
+              <TableHead>status</TableHead>
+              <TableHead>ship date</TableHead>
+              <TableHead className="w-12"></TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {offices.map((office) => (
+              <TableRow key={office._id}>
+                <TableCell>
+                  <Checkbox
+                    checked={selectedOffices.includes(office._id)}
+                    onCheckedChange={() => toggleOffice(office._id)}
+                  />
+                </TableCell>
+                <TableCell className="font-medium">
+                  <div className="flex items-center gap-3">
+                    {office.image && (
+                      <div className="w-10 h-10 bg-gray-200 rounded flex items-center justify-center">
+                        <span className="text-lg">🏢</span>
+                      </div>
+                    )}
+                    <div>
+                      <div>{office.officeName}</div>
+                      {office.locationUrl && (
+                        <a
+                          href={office.locationUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-xs text-blue-600 hover:underline"
+                        >
+                          {office.locationUrl}
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                </TableCell>
+                <TableCell>{office.location}</TableCell>
+                <TableCell className="text-center">{office.employees}</TableCell>
+                <TableCell className="text-center">{office.charitable}</TableCell>
+                <TableCell className="text-center font-mono">{office.officeCode}</TableCell>
+                <TableCell className="text-center">{office.orders || "-"}</TableCell>
+                <TableCell className="text-center">{office.target || "-"}</TableCell>
+                <TableCell>{getStatusBadge(office.status)}</TableCell>
+                <TableCell>{format(new Date(office.shipDate), "d MMM")}</TableCell>
+                <TableCell>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="sm">
+                        <MoreVertical className="w-4 h-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem asChild>
+                        <Link href={`/admin/offices/${office._id}/edit`}>
+                          <Edit className="w-4 h-4 mr-2" />
+                          Edit
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        className="text-red-600"
+                        onClick={() => setDeleteOfficeId(office._id)}
+                      >
+                        <Trash2 className="w-4 h-4 mr-2" />
+                        Delete
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
 
       <DeleteOfficeDialog
         officeId={deleteOfficeId}

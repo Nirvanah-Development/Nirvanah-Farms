@@ -45,8 +45,8 @@ export const officeType = defineType({
     defineField({
       name: 'orders',
       title: 'Orders',
-      type: 'string',
-      description: 'Order quantities (e.g., 75 KG)'
+      type: 'number',
+      description: 'Order quantities (e.g., 75)'
     }),
     defineField({
       name: 'target',

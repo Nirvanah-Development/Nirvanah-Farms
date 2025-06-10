@@ -44,43 +44,46 @@ export function BulkActions({ selectedOffices, onComplete }: BulkActionsProps) {
   };
 
   return (
-    <div className="flex items-center gap-3">
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="outline" disabled={isLoading}>
-            Bulk Actions
-            <ChevronDown className="w-4 h-4 ml-2" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent>
-          <DropdownMenuItem onClick={() => handleStatusChange("gifted")}>
-            Change status to Gifted
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => handleStatusChange("target_filled")}>
-            Change status to Target filled
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => handleStatusChange("donated")}>
-            Change status to Donated
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+    <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+      <div className="flex items-center gap-3">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" disabled={isLoading} className="w-full sm:w-auto">
+              Bulk Actions
+              <ChevronDown className="w-4 h-4 ml-2" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem onClick={() => handleStatusChange("gifted")}>
+              Change status to Gifted
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => handleStatusChange("target_filled")}>
+              Change status to Target filled
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => handleStatusChange("donated")}>
+              Change status to Donated
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
 
-      <Button
-        onClick={() => {
-          if (selectedOffices.length === 0) {
-            toast.error("Please select at least one office");
-            return;
-          }
-          toast.info(`${selectedOffices.length} office(s) selected`);
-        }}
-        variant="secondary"
-        disabled={isLoading}
-      >
-        Apply
-      </Button>
+        <Button
+          onClick={() => {
+            if (selectedOffices.length === 0) {
+              toast.error("Please select at least one office");
+              return;
+            }
+            toast.info(`${selectedOffices.length} office(s) selected`);
+          }}
+          variant="secondary"
+          disabled={isLoading}
+          className="w-full sm:w-auto"
+        >
+          Apply
+        </Button>
+      </div>
 
       {selectedOffices.length > 0 && (
-        <span className="text-sm text-gray-600">
+        <span className="text-sm text-gray-600 text-center sm:text-left">
           {selectedOffices.length} selected
         </span>
       )}

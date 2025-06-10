@@ -29,14 +29,14 @@ export function OfficeSearch({ defaultValue = "" }: OfficeSearchProps) {
   }, [search, router, searchParams]);
 
   return (
-    <div className="relative max-w-md">
+    <div className="relative w-full sm:max-w-md">
       <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
       <Input
         type="text"
         placeholder="Search by office code..."
         value={search}
         onChange={(e) => setSearch(e.target.value)}
-        className="pl-10"
+        className="pl-10 w-full"
       />
     </div>
   );
