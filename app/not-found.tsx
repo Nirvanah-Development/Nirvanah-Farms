@@ -31,6 +31,7 @@ const NotFoundPage = () => {
             >
               Help
             </Link>
+            
           </div>
         </div>
         <div className="mt-8 text-center">

@@ -2,9 +2,14 @@
 import { SignInButton } from "@clerk/nextjs";
 import React from "react";
 
-const SignIn = () => {
+interface SignInProps {
+  mode?: "modal" | "redirect";
+  redirectUrl?: string;
+}
+
+const SignIn = ({ mode = "modal", redirectUrl }: SignInProps) => {
   return (
-    <SignInButton mode="modal">
+    <SignInButton mode={mode} forceRedirectUrl={redirectUrl}>
       <button className="text-sm font-semibold hover:text-darkColor text-lightColor hover:cursor-pointer hoverEffect">
         Login
       </button>
