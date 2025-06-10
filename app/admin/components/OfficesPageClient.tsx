@@ -15,6 +15,11 @@ interface OfficesPageClientProps {
 export function OfficesPageClient({ offices, searchParam }: OfficesPageClientProps) {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
 
+  const handleOfficeUpdated = () => {
+    // Refresh the page to show updated office data
+    window.location.reload();
+  };
+
   return (
     <div className="space-y-4 sm:space-y-6 ml-0 md:ml-0">
       {/* Header */}
@@ -38,17 +43,14 @@ export function OfficesPageClient({ offices, searchParam }: OfficesPageClientPro
 
       {/* Office Table */}
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-        <OfficeTable offices={offices} />
+        <OfficeTable offices={offices} onOfficeUpdated={handleOfficeUpdated} />
       </div>
 
       {/* Create Office Dialog */}
       <CreateOfficeDialog
         isOpen={isCreateDialogOpen}
         onClose={() => setIsCreateDialogOpen(false)}
-        onSuccess={() => {
-          // Refresh the page to show new office
-          window.location.reload();
-        }}
+        onSuccess={handleOfficeUpdated}
       />
     </div>
   );

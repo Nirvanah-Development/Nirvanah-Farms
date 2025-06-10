@@ -21,6 +21,7 @@ import { Button } from "@/components/ui/button";
 import { MoreVertical, Edit, Trash2, MapPin, Users, Building, Calendar, Target, Package } from "lucide-react";
 import { BulkActions } from "./BulkActions";
 import { DeleteOfficeDialog } from "./DeleteOfficeDialog";
+import { EditOfficeDialog } from "./EditOfficeDialog";
 import Link from "next/link";
 import { format } from "date-fns";
 
@@ -42,11 +43,13 @@ interface Office {
 
 interface OfficeTableProps {
   offices: Office[];
+  onOfficeUpdated?: () => void;
 }
 
-export function OfficeTable({ offices }: OfficeTableProps) {
+export function OfficeTable({ offices, onOfficeUpdated }: OfficeTableProps) {
   const [selectedOffices, setSelectedOffices] = useState<string[]>([]);
   const [deleteOfficeId, setDeleteOfficeId] = useState<string | null>(null);
+  const [editOfficeId, setEditOfficeId] = useState<string | null>(null);
 
   const toggleOffice = (officeId: string) => {
     setSelectedOffices((prev) =>
@@ -109,11 +112,9 @@ export function OfficeTable({ offices }: OfficeTableProps) {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem asChild>
-              <Link href={`/admin/offices/${office._id}/edit`}>
-                <Edit className="w-4 h-4 mr-2" />
-                Edit
-              </Link>
+            <DropdownMenuItem onClick={() => setEditOfficeId(office._id)}>
+              <Edit className="w-4 h-4 mr-2" />
+              Edit
             </DropdownMenuItem>
             <DropdownMenuItem
               className="text-red-600"
@@ -275,11 +276,9 @@ export function OfficeTable({ offices }: OfficeTableProps) {
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                      <DropdownMenuItem asChild>
-                        <Link href={`/admin/offices/${office._id}/edit`}>
-                          <Edit className="w-4 h-4 mr-2" />
-                          Edit
-                        </Link>
+                      <DropdownMenuItem onClick={() => setEditOfficeId(office._id)}>
+                        <Edit className="w-4 h-4 mr-2" />
+                        Edit
                       </DropdownMenuItem>
                       <DropdownMenuItem
                         className="text-red-600"
@@ -301,6 +300,18 @@ export function OfficeTable({ offices }: OfficeTableProps) {
         officeId={deleteOfficeId}
         onClose={() => setDeleteOfficeId(null)}
       />
+
+      {editOfficeId && (
+        <EditOfficeDialog
+          isOpen={!!editOfficeId}
+          officeId={editOfficeId}
+          onClose={() => setEditOfficeId(null)}
+          onSuccess={() => {
+            setEditOfficeId(null);
+            onOfficeUpdated?.();
+          }}
+        />
+      )}
     </>
   );
 } 

@@ -25,6 +25,18 @@ export const officeType = defineType({
       description: 'Maps URL for the office location'
     }),
     defineField({
+      name: 'phone',
+      title: 'Permanent Phone',
+      type: 'string',
+      description: 'Office phone number'
+    }),
+    defineField({
+      name: 'email',
+      title: 'Permanent Email',
+      type: 'string',
+      description: 'Office email address'
+    }),
+    defineField({
       name: 'officeCode',
       title: 'Office Code',
       type: 'string',
@@ -89,6 +101,25 @@ export const officeType = defineType({
       title: 'Description',
       type: 'text',
       rows: 3
+    }),
+    defineField({
+      name: 'supportStaff',
+      title: 'Support Staff',
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            {
+              name: 'name',
+              title: 'Name',
+              type: 'string',
+              validation: Rule => Rule.required()
+            }
+          ]
+        }
+      ],
+      description: 'List of charitable support staff names'
     }),
     defineField({
       name: 'isActive',

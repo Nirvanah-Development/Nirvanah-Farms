@@ -54,6 +54,30 @@ export async function getExistingOfficeCodes(): Promise<string[]> {
   return offices.map((office: { officeCode: string }) => office.officeCode);
 }
 
+export async function getOfficeById(officeId: string) {
+  const query = groq`*[_type == "office" && _id == $officeId][0]{
+    _id,
+    officeName,
+    location,
+    locationUrl,
+    phone,
+    email,
+    officeCode,
+    employees,
+    charitable,
+    orders,
+    target,
+    status,
+    shipDate,
+    isActive,
+    image,
+    description,
+    supportStaff
+  }`;
+  
+  return await client.fetch(query, { officeId });
+}
+
 export async function createOffice(officeData: {
   officeName: string;
   location: string;
@@ -89,6 +113,23 @@ export async function updateOfficeStatus(officeIds: string[], status: string) {
   });
   
   return await transaction.commit();
+}
+
+export async function updateOffice(officeId: string, officeData: {
+  officeName: string;
+  location: string;
+  locationUrl?: string;
+  phone?: string;
+  email?: string;
+  employees: number;
+  charitable: number;
+  orders?: number;
+  target?: string;
+  shipDate: string;
+  description?: string;
+  supportStaff?: { name: string }[];
+}) {
+  return await backendClient.patch(officeId).set(officeData).commit();
 }
 
 export async function deleteOffice(officeId: string) {
