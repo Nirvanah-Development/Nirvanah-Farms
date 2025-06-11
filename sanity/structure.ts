@@ -14,7 +14,6 @@ export const structure: StructureResolver = (S) =>
             .items([
               S.documentTypeListItem('product').title('Products'),
               S.documentTypeListItem('category').title('Categories'),
-              S.documentTypeListItem('brand').title('Brands'),
             ])
         ),
 
@@ -60,19 +59,6 @@ export const structure: StructureResolver = (S) =>
             ])
         ),
 
-      // Blog Section
-      S.listItem()
-        .title('📝 Blog')
-        .child(
-          S.list()
-            .title('Blog Management')
-            .items([
-              S.documentTypeListItem('blog').title('Blog Posts'),
-              S.documentTypeListItem('blogCategory').title('Blog Categories'),
-              S.documentTypeListItem('author').title('Authors'),
-            ])
-        ),
-
       // Settings Section
       S.listItem()
         .title('⚙️ Settings')
@@ -88,7 +74,7 @@ export const structure: StructureResolver = (S) =>
       S.divider(),
 
       // All Documents (for advanced users)
-      S.listItem()
-        .title('🗂️ All Documents')
-        .child(S.documentTypeListItems()),
+      ...S.documentTypeListItems().filter(
+        (listItem) => !['product', 'category', 'order', 'office', 'address'].includes(listItem.getId() || '')
+      ),
     ])
