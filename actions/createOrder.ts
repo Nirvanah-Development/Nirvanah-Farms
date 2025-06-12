@@ -2,7 +2,7 @@
 
 import { backendClient } from "@/sanity/lib/backendClient";
 import { Address } from "@/sanity.types";
-import { CartItem } from "@/store";
+import { CartItem } from "@/store/cart";
 
 interface GuestAddress {
   name: string;

@@ -469,7 +469,6 @@ export default function CheckoutPage() {
                       </div>
                       <div className="flex-1">
                         <h4 className="font-medium text-sm">{item.product.name}</h4>
-                        <p className="text-sm text-gray-600">{item.product.weight || "0.8Kg"}</p>
                       </div>
                       <div className="text-right">
                         <div className="font-bold text-green-600">
@@ -507,13 +506,12 @@ export default function CheckoutPage() {
                 </div>
                 <div className="flex justify-between">
                   <span>Shipping 🚚</span>
-                  <span>Enter shipping address</span>
+                  <span>৳{shippingCost.toFixed(2)}</span>
                 </div>
                 <Separator />
                 <div className="flex justify-between text-lg font-bold">
                   <span>Total</span>
                   <div className="text-right">
-                    <div className="text-sm text-gray-500 line-through">৳৫০</div>
                     <div className="text-green-600">৳{total.toFixed(2)}</div>
                   </div>
                 </div>

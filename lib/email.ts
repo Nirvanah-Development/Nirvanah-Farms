@@ -260,9 +260,10 @@ export async function sendOrderConfirmationEmailFallback(data: EmailData): Promi
     try {
       await transporter.verify();
       console.log('✅ SMTP connection verified successfully');
-    } catch (verifyError: any) {
+    } catch (verifyError: unknown) {
       console.error('❌ SMTP connection verification failed:', verifyError);
-      throw new Error(`SMTP connection failed: ${verifyError.message}`);
+      const errorMessage = verifyError instanceof Error ? verifyError.message : 'Connection verification failed';
+      throw new Error(`SMTP connection failed: ${errorMessage}`);
     }
 
     const { order, customerEmail, customerName } = data;
@@ -297,18 +298,22 @@ Your Store Team
     
     return { success: true, messageId: result.messageId };
     
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('❌ Fallback email service failed:', error);
     
     // Provide more detailed error information
-    if (error.code === 'EAUTH') {
-      console.error('🔐 Authentication failed - check SMTP_USER and SMTP_PASS');
-    } else if (error.code === 'ECONNECTION') {
-      console.error('🔌 Connection failed - check SMTP_HOST and SMTP_PORT');
-    } else if (error.code === 'ETIMEDOUT') {
-      console.error('⏱️ Connection timed out - check network connection');
+    if (error && typeof error === 'object' && 'code' in error) {
+      const errorCode = (error as { code: string }).code;
+      if (errorCode === 'EAUTH') {
+        console.error('🔐 Authentication failed - check SMTP_USER and SMTP_PASS');
+      } else if (errorCode === 'ECONNECTION') {
+        console.error('🔌 Connection failed - check SMTP_HOST and SMTP_PORT');
+      } else if (errorCode === 'ETIMEDOUT') {
+        console.error('⏱️ Connection timed out - check network connection');
+      }
     }
     
-    throw new Error(`SMTP fallback failed: ${error.message}`);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    throw new Error(`SMTP fallback failed: ${errorMessage}`);
   }
 }

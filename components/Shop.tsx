@@ -1,5 +1,5 @@
 "use client";
-import { BRANDS_QUERYResult, Category, Product } from "@/sanity.types";
+import { Category, Product } from "@/sanity.types";
 import React, { useEffect, useState, useCallback } from "react";
 import Container from "./Container";
 import Title from "./Title";
@@ -13,7 +13,6 @@ import ProductCard from "./ProductCard";
 
 interface Props {
   categories: Category[];
-  brands: BRANDS_QUERYResult;
 }
 const Shop = ({ categories }: Props) => {
   const searchParams = useSearchParams();

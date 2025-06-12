@@ -9,7 +9,7 @@ const Container = ({
   className?: string;
 }) => {
   return (
-    <div className={cn("max-w-screen-xl mx-auto px-4", className)}>
+    <div className={cn("max-w-screen-xl mx-auto px-2 md:px-4", className)}>
       {children}
     </div>
   );
