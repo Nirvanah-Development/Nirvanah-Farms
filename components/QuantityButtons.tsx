@@ -46,27 +46,29 @@ const QuantityButtons = ({ product, className }: Props) => {
   };
 
   return (
-    <div className={cn("flex items-center gap-1 pb-1 text-base", className)}>
+    <div className={cn("flex items-center gap-0.5 sm:gap-1 text-base max-w-full", className)}>
       <Button
         onClick={handleRemoveProduct}
         variant="outline"
         size="icon"
         disabled={itemCount === 0 || !product?._id}
-        className="w-6 h-6 border-[1px] hover:bg-shop_dark_green/20 hoverEffect"
+        className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 border-[1px] hover:bg-shop_dark_green/20 transition-colors rounded-md flex-shrink-0 p-0"
       >
-        <Minus />
+        <Minus className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
       </Button>
-      <span className="font-semibold text-sm w-6 text-center text-darkColor">
+      
+      <span className="font-semibold text-xs sm:text-sm w-6 sm:w-8 text-center text-darkColor flex-shrink-0">
         {itemCount}
       </span>
+      
       <Button
         onClick={handleAddToCart}
         variant="outline"
         size="icon"
         disabled={!product?._id}
-        className="w-6 h-6 border-[1px] hover:bg-shop_dark_green/20 hoverEffect"
+        className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 border-[1px] hover:bg-shop_dark_green/20 transition-colors rounded-md flex-shrink-0 p-0"
       >
-        <Plus />
+        <Plus className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
       </Button>
     </div>
   );

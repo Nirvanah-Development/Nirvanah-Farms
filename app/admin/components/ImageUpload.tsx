@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { Upload, X, Camera, Image as ImageIcon } from "lucide-react";
+import { Upload, X, Image as ImageIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 interface ImageUploadProps {
   onImagesChange: (files: File[]) => void;
@@ -113,9 +114,11 @@ export function ImageUpload({ onImagesChange, maxImages = 5 }: ImageUploadProps)
           {previewUrls.map((url, index) => (
             <div key={index} className="relative group">
               <div className="w-20 h-20 border-2 border-gray-300 rounded-lg overflow-hidden bg-gray-100">
-                <img
+                <Image
                   src={url}
                   alt={`Preview ${index + 1}`}
+                  width={80}
+                  height={80}
                   className="w-full h-full object-cover"
                 />
               </div>

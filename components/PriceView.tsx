@@ -12,7 +12,7 @@ const PriceView = ({ regularPrice, salePrice, status, className }: Props) => {
   const isSale = status === "sale" && salePrice && salePrice > 0;
   return (
     <div className="flex items-center justify-between gap-5">
-      <div className="flex items-center gap-2">
+      <div className="flex flex-col md:flex-row items-center md:gap-2">
         <PriceFormatter
           amount={isSale ? salePrice : regularPrice}
           className={cn("text-shop_dark_green", className)}

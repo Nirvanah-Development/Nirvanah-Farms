@@ -22,7 +22,6 @@ import { MoreVertical, Edit, Trash2, MapPin, Users, Building, Calendar, Target, 
 import { BulkActions } from "./BulkActions";
 import { DeleteOfficeDialog } from "./DeleteOfficeDialog";
 import { EditOfficeDialog } from "./EditOfficeDialog";
-import Link from "next/link";
 import { format } from "date-fns";
 
 interface Office {
@@ -38,7 +37,7 @@ interface Office {
   status: string;
   shipDate: string;
   isActive: boolean;
-  image?: any;
+  image?: string;
 }
 
 interface OfficeTableProps {

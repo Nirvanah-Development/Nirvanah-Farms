@@ -1,5 +1,5 @@
 import Container from "@/components/Container";
-import HomeCategories from "@/components/HomeCategories";
+// import HomeCategories from "@/components/HomeCategories";
 import ProductGrid from "@/components/ProductGrid";
 // import OfficeSection from "@/components/OfficeSection";
 import VideoHeroSection from "@/components/VideoHeroSection";
@@ -34,7 +34,7 @@ const Home = async () => {
       {/* Existing Content */}
       <Container className="bg-shop-light-pink">
         <ProductGrid categories={categories} />
-        <HomeCategories categories={categories} />
+        {/* <HomeCategories categories={categories} /> */}
       </Container>
     </>
   );

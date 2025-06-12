@@ -147,7 +147,7 @@ export default function CartSidebar() {
               </span>
             </div>
             <Button 
-              className="w-full bg-shop_dark_green text-white font-semibold rounded-md"
+              className="w-full bg-shop_light_green text-white font-semibold rounded-md"
               onClick={handleCheckout}
               disabled={items.length === 0}
             >

@@ -7,8 +7,24 @@ import { OfficeTable } from "./OfficeTable";
 import { OfficeSearch } from "./OfficeSearch";
 import { CreateOfficeDialog } from "./CreateOfficeDialog";
 
+interface Office {
+  _id: string;
+  officeName: string;
+  location: string;
+  locationUrl?: string;
+  officeCode: string;
+  employees: number;
+  charitable: number;
+  orders?: number;
+  target?: string;
+  status: string;
+  shipDate: string;
+  isActive: boolean;
+  image?: string;
+}
+
 interface OfficesPageClientProps {
-  offices: any[];
+  offices: Office[];
   searchParam?: string;
 }
 

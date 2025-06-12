@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   Dialog,
   DialogContent,
@@ -56,7 +56,7 @@ interface OfficeData {
   shipDate: string;
   description?: string;
   supportStaff?: { name: string }[];
-  image?: any;
+  image?: string;
 }
 
 export function EditOfficeDialog({ isOpen, onClose, onSuccess, officeId }: EditOfficeDialogProps) {
@@ -77,21 +77,14 @@ export function EditOfficeDialog({ isOpen, onClose, onSuccess, officeId }: EditO
   const [originalData, setOriginalData] = useState<FormData | null>(null);
   const [officeCode, setOfficeCode] = useState("");
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
-  const [existingImages, setExistingImages] = useState<any[]>([]);
+  const [existingImages, setExistingImages] = useState<string[]>([]);
   const [supportStaff, setSupportStaff] = useState<{ name: string }[]>([]);
   const [originalSupportStaff, setOriginalSupportStaff] = useState<{ name: string }[]>([]);
   const [isStaffDialogOpen, setIsStaffDialogOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Load office data when dialog opens
-  useEffect(() => {
-    if (isOpen && officeId) {
-      loadOfficeData();
-    }
-  }, [isOpen, officeId]);
-
-  const loadOfficeData = async () => {
+  const loadOfficeData = useCallback(async () => {
     setIsLoading(true);
     try {
       const result = await getOfficeForEdit(officeId);
@@ -127,13 +120,20 @@ export function EditOfficeDialog({ isOpen, onClose, onSuccess, officeId }: EditO
         toast.error(result.error || "Failed to load office data");
         onClose();
       }
-    } catch (error) {
+    } catch {
       toast.error("An error occurred while loading office data");
       onClose();
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [officeId, onClose]);
+
+  // Load office data when dialog opens
+  useEffect(() => {
+    if (isOpen && officeId) {
+      loadOfficeData();
+    }
+  }, [isOpen, officeId, loadOfficeData]);
 
   // Update support staff array when charitable count changes
   useEffect(() => {
@@ -153,9 +153,9 @@ export function EditOfficeDialog({ isOpen, onClose, onSuccess, officeId }: EditO
         setSupportStaff(supportStaff.slice(0, newLength));
       }
     }
-  }, [formData.charitable, supportStaff.length]);
+  }, [formData.charitable, supportStaff]);
 
-  const handleInputChange = (field: keyof FormData, value: any) => {
+  const handleInputChange = (field: keyof FormData, value: string | number | Date | undefined) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
@@ -216,9 +216,8 @@ export function EditOfficeDialog({ isOpen, onClose, onSuccess, officeId }: EditO
       } else {
         toast.error(result.error || "Failed to update office");
       }
-    } catch (error) {
+    } catch {
       toast.error("An unexpected error occurred");
-      console.error("Error updating office:", error);
     } finally {
       setIsSubmitting(false);
     }

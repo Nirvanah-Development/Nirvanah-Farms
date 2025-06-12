@@ -36,7 +36,7 @@ export function BulkActions({ selectedOffices, onComplete }: BulkActionsProps) {
       } else {
         toast.error(result.error || "Failed to update status");
       }
-    } catch (error) {
+    } catch {
       toast.error("An error occurred while updating status");
     } finally {
       setIsLoading(false);

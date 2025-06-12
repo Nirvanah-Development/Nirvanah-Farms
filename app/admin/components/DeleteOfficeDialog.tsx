@@ -35,7 +35,7 @@ export function DeleteOfficeDialog({ officeId, onClose }: DeleteOfficeDialogProp
       } else {
         toast.error(result.error || "Failed to delete office");
       }
-    } catch (error) {
+    } catch {
       toast.error("An error occurred while deleting the office");
     } finally {
       setIsDeleting(false);

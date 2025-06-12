@@ -52,6 +52,7 @@ export function CreateOfficeDialog({ isOpen, onClose, onSuccess }: CreateOfficeD
   });
 
   const [officeCode, setOfficeCode] = useState("");
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const [supportStaff, setSupportStaff] = useState<{ name: string }[]>([]);
   const [isStaffDialogOpen, setIsStaffDialogOpen] = useState(false);
@@ -82,9 +83,9 @@ export function CreateOfficeDialog({ isOpen, onClose, onSuccess }: CreateOfficeD
         setSupportStaff(supportStaff.slice(0, newLength));
       }
     }
-  }, [formData.charitable, supportStaff.length]);
+  }, [formData.charitable, supportStaff]);
 
-  const handleInputChange = (field: keyof FormData, value: any) => {
+  const handleInputChange = (field: keyof FormData, value: string | number | Date | undefined) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
@@ -142,9 +143,9 @@ export function CreateOfficeDialog({ isOpen, onClose, onSuccess }: CreateOfficeD
       shipDate: undefined,
       description: "",
     });
-    setSelectedImages([]);
     setSupportStaff([]);
     setOfficeCode("");
+    setSelectedImages([]);
     onClose();
   };
 
