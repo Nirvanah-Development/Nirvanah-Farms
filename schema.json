@@ -39,14 +39,14 @@
         "value": {
           "type": "string"
         },
-        "optional": false
+        "optional": true
       },
       "location": {
         "type": "objectAttribute",
         "value": {
           "type": "string"
         },
-        "optional": false
+        "optional": true
       },
       "locationUrl": {
         "type": "objectAttribute",
@@ -74,21 +74,21 @@
         "value": {
           "type": "string"
         },
-        "optional": false
+        "optional": true
       },
       "employees": {
         "type": "objectAttribute",
         "value": {
           "type": "number"
         },
-        "optional": false
+        "optional": true
       },
       "charitable": {
         "type": "objectAttribute",
         "value": {
           "type": "number"
         },
-        "optional": false
+        "optional": true
       },
       "orders": {
         "type": "objectAttribute",
@@ -127,14 +127,14 @@
             }
           ]
         },
-        "optional": false
+        "optional": true
       },
       "shipDate": {
         "type": "objectAttribute",
         "value": {
           "type": "string"
         },
-        "optional": false
+        "optional": true
       },
       "image": {
         "type": "objectAttribute",
@@ -224,7 +224,7 @@
                 "value": {
                   "type": "string"
                 },
-                "optional": false
+                "optional": true
               }
             },
             "rest": {
@@ -291,7 +291,7 @@
         "value": {
           "type": "string"
         },
-        "optional": false
+        "optional": true
       },
       "email": {
         "type": "objectAttribute",
@@ -305,28 +305,28 @@
         "value": {
           "type": "string"
         },
-        "optional": false
+        "optional": true
       },
       "city": {
         "type": "objectAttribute",
         "value": {
           "type": "string"
         },
-        "optional": false
+        "optional": true
       },
       "state": {
         "type": "objectAttribute",
         "value": {
           "type": "string"
         },
-        "optional": false
+        "optional": true
       },
       "zip": {
         "type": "objectAttribute",
         "value": {
           "type": "string"
         },
-        "optional": false
+        "optional": true
       },
       "default": {
         "type": "objectAttribute",
@@ -384,7 +384,7 @@
         "value": {
           "type": "string"
         },
-        "optional": false
+        "optional": true
       },
       "clerkUserId": {
         "type": "objectAttribute",
@@ -398,14 +398,14 @@
         "value": {
           "type": "string"
         },
-        "optional": false
+        "optional": true
       },
       "phoneNumber": {
         "type": "objectAttribute",
         "value": {
           "type": "string"
         },
-        "optional": false
+        "optional": true
       },
       "alternativePhone": {
         "type": "objectAttribute",
@@ -419,7 +419,7 @@
         "value": {
           "type": "string"
         },
-        "optional": false
+        "optional": true
       },
       "officeCode": {
         "type": "objectAttribute",
@@ -467,7 +467,7 @@
             }
           ]
         },
-        "optional": false
+        "optional": true
       },
       "thana": {
         "type": "objectAttribute",
@@ -508,7 +508,7 @@
             }
           ]
         },
-        "optional": false
+        "optional": true
       },
       "shippingMethod": {
         "type": "objectAttribute",
@@ -529,14 +529,14 @@
             }
           ]
         },
-        "optional": false
+        "optional": true
       },
       "shippingCost": {
         "type": "objectAttribute",
         "value": {
           "type": "number"
         },
-        "optional": false
+        "optional": true
       },
       "paymentMethod": {
         "type": "objectAttribute",
@@ -557,7 +557,7 @@
             }
           ]
         },
-        "optional": false
+        "optional": true
       },
       "products": {
         "type": "objectAttribute",
@@ -608,7 +608,7 @@
                 "value": {
                   "type": "number"
                 },
-                "optional": false
+                "optional": true
               }
             },
             "rest": {
@@ -631,7 +631,7 @@
         "value": {
           "type": "number"
         },
-        "optional": false
+        "optional": true
       },
       "discountAmount": {
         "type": "objectAttribute",
@@ -647,19 +647,49 @@
         },
         "optional": true
       },
+      "discountCodeId": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "object",
+          "attributes": {
+            "_ref": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "string"
+              }
+            },
+            "_type": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "string",
+                "value": "reference"
+              }
+            },
+            "_weak": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "boolean"
+              },
+              "optional": true
+            }
+          },
+          "dereferencesTo": "discountCode"
+        },
+        "optional": true
+      },
       "totalPrice": {
         "type": "objectAttribute",
         "value": {
           "type": "number"
         },
-        "optional": false
+        "optional": true
       },
       "currency": {
         "type": "objectAttribute",
         "value": {
           "type": "string"
         },
-        "optional": false
+        "optional": true
       },
       "address": {
         "type": "objectAttribute",
@@ -671,28 +701,28 @@
               "value": {
                 "type": "string"
               },
-              "optional": false
+              "optional": true
             },
             "district": {
               "type": "objectAttribute",
               "value": {
                 "type": "string"
               },
-              "optional": false
+              "optional": true
             },
             "thana": {
               "type": "objectAttribute",
               "value": {
                 "type": "string"
               },
-              "optional": false
+              "optional": true
             },
             "name": {
               "type": "objectAttribute",
               "value": {
                 "type": "string"
               },
-              "optional": false
+              "optional": true
             }
           }
         },
@@ -732,12 +762,149 @@
         "value": {
           "type": "string"
         },
-        "optional": false
+        "optional": true
       },
       "notes": {
         "type": "objectAttribute",
         "value": {
           "type": "string"
+        },
+        "optional": true
+      }
+    }
+  },
+  {
+    "name": "discountCode",
+    "type": "document",
+    "attributes": {
+      "_id": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        }
+      },
+      "_type": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string",
+          "value": "discountCode"
+        }
+      },
+      "_createdAt": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        }
+      },
+      "_updatedAt": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        }
+      },
+      "_rev": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        }
+      },
+      "code": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
+      },
+      "name": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
+      },
+      "percentageOff": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "number"
+        },
+        "optional": true
+      },
+      "maxUsageCount": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "number"
+        },
+        "optional": true
+      },
+      "currentUsageCount": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "number"
+        },
+        "optional": true
+      },
+      "startDate": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
+      },
+      "endDate": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
+      },
+      "applicableProducts": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "array",
+          "of": {
+            "type": "object",
+            "attributes": {
+              "_ref": {
+                "type": "objectAttribute",
+                "value": {
+                  "type": "string"
+                }
+              },
+              "_type": {
+                "type": "objectAttribute",
+                "value": {
+                  "type": "string",
+                  "value": "reference"
+                }
+              },
+              "_weak": {
+                "type": "objectAttribute",
+                "value": {
+                  "type": "boolean"
+                },
+                "optional": true
+              }
+            },
+            "dereferencesTo": "product",
+            "rest": {
+              "type": "object",
+              "attributes": {
+                "_key": {
+                  "type": "objectAttribute",
+                  "value": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "optional": true
+      },
+      "isActive": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "boolean"
         },
         "optional": true
       }
@@ -783,7 +950,7 @@
         "value": {
           "type": "string"
         },
-        "optional": false
+        "optional": true
       },
       "slug": {
         "type": "objectAttribute",
@@ -791,7 +958,7 @@
           "type": "inline",
           "name": "slug"
         },
-        "optional": false
+        "optional": true
       },
       "images": {
         "type": "objectAttribute",
@@ -1065,14 +1232,14 @@
         "value": {
           "type": "number"
         },
-        "optional": false
+        "optional": true
       },
       "salePrice": {
         "type": "objectAttribute",
         "value": {
           "type": "number"
         },
-        "optional": false
+        "optional": true
       },
       "categories": {
         "type": "objectAttribute",
@@ -1173,7 +1340,7 @@
         "value": {
           "type": "string"
         },
-        "optional": false
+        "optional": true
       },
       "slug": {
         "type": "objectAttribute",
@@ -1181,7 +1348,7 @@
           "type": "inline",
           "name": "slug"
         },
-        "optional": false
+        "optional": true
       },
       "description": {
         "type": "objectAttribute",
@@ -1919,7 +2086,7 @@
           "value": {
             "type": "string"
           },
-          "optional": false
+          "optional": true
         },
         "source": {
           "type": "objectAttribute",

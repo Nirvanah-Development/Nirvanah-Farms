@@ -4,6 +4,7 @@ import { productType } from "./productType";
 import { orderType } from "./orderType";
 import { addressType } from "./addressType";
 import { officeType } from "./officeType";
+import { discountCodeType } from "./discountCodeType";
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -12,5 +13,6 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     orderType,
     addressType,
     officeType,
+    discountCodeType,
   ],
 };

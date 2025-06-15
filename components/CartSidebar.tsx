@@ -31,7 +31,7 @@ export default function CartSidebar() {
     0
   );
 
-  const discount = 0; // You can implement discount logic here
+  const discount = 0; // Discount will be applied at checkout
   const total = subtotal - discount;
 
   const handleCheckout = () => {

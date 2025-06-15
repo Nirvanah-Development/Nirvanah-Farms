@@ -29,6 +29,14 @@ interface OrderFormData {
   discountCode: string;
 }
 
+interface AppliedDiscount {
+  _id: string;
+  code: string;
+  name: string;
+  percentageOff: number;
+  discountAmount: number;
+}
+
 const districts = [
   { value: "dhaka_city", label: "Dhaka City" },
   { value: "chittagong", label: "Chittagong" },
@@ -75,6 +83,9 @@ export default function CheckoutPage() {
   });
 
   const [errors, setErrors] = useState<Partial<OrderFormData>>({});
+  const [appliedDiscount, setAppliedDiscount] = useState<AppliedDiscount | null>(null);
+  const [discountLoading, setDiscountLoading] = useState(false);
+  const [discountError, setDiscountError] = useState<string | null>(null);
 
   // Calculate totals
   const subtotal = items.reduce((sum, item) => {
@@ -85,7 +96,7 @@ export default function CheckoutPage() {
   }, 0);
 
   const shippingCost = shippingOptions.find(option => option.value === formData.shippingMethod)?.cost || 70;
-  const discountAmount = 0; // Will implement discount logic later
+  const discountAmount = appliedDiscount?.discountAmount || 0;
   const total = subtotal + shippingCost - discountAmount;
 
   // Redirect if cart is empty
@@ -166,7 +177,8 @@ export default function CheckoutPage() {
         })),
         subtotal,
         discountAmount,
-        discountCode: formData.discountCode || null,
+        discountCode: appliedDiscount?.code || null,
+        discountCodeId: appliedDiscount?._id || null,
         totalPrice: total,
         currency: "BDT",
         address: {
@@ -194,6 +206,24 @@ export default function CheckoutPage() {
 
       const result = await response.json();
       
+      // Update discount usage count if discount was applied
+      if (appliedDiscount) {
+        try {
+          await fetch("/api/discount/use", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              discountCodeId: appliedDiscount._id,
+            }),
+          });
+        } catch (error) {
+          console.error("Error updating discount usage:", error);
+          // Don't fail the order if discount usage update fails
+        }
+      }
+      
       // Clear cart and redirect to success page
       resetCart();
       toast.success("অর্ডার সফলভাবে তৈরি হয়েছে! (Order created successfully!)");
@@ -212,6 +242,76 @@ export default function CheckoutPage() {
     if (errors[field]) {
       setErrors(prev => ({ ...prev, [field]: undefined }));
     }
+    
+    // Reset applied discount and error when discount code changes
+    if (field === 'discountCode') {
+      if (appliedDiscount) {
+        setAppliedDiscount(null);
+      }
+      if (discountError) {
+        setDiscountError(null);
+      }
+    }
+  };
+
+  const handleApplyDiscount = async () => {
+    if (!formData.discountCode.trim()) {
+      toast.error("Please enter a discount code");
+      return;
+    }
+
+    setDiscountLoading(true);
+    setDiscountError(null); // Clear any previous errors
+
+    try {
+      const response = await fetch("/api/discount/validate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          code: formData.discountCode,
+          cartItems: items,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        // Handle 400 errors by showing the error in the card
+        if (response.status === 400) {
+          setDiscountError("Discount code not valid for now!");
+        } else {
+          toast.error(result.error || "Failed to apply discount code");
+        }
+        return;
+      }
+
+      // Success - clear error and set applied discount
+      setDiscountError(null);
+      setAppliedDiscount({
+        _id: result.discountCode._id,
+        code: result.discountCode.code,
+        name: result.discountCode.name,
+        percentageOff: result.discountCode.percentageOff,
+        discountAmount: result.discountAmount,
+      });
+
+      toast.success(`Discount applied! ${result.discountCode.percentageOff}% off`);
+      
+    } catch (error) {
+      console.error("Discount application error:", error);
+      toast.error("Failed to apply discount code");
+    } finally {
+      setDiscountLoading(false);
+    }
+  };
+
+  const handleRemoveDiscount = () => {
+    setAppliedDiscount(null);
+    setDiscountError(null);
+    setFormData(prev => ({ ...prev, discountCode: "" }));
+    toast.success("Discount removed");
   };
 
   if (items.length === 0) {
@@ -484,16 +584,55 @@ export default function CheckoutPage() {
             {/* Discount Code */}
             <Card>
               <CardContent className="pt-6">
-                <div className="flex gap-2">
-                  <Input
-                    placeholder="Discount code or gift card"
-                    value={formData.discountCode}
-                    onChange={(e) => handleInputChange("discountCode", e.target.value)}
-                  />
-                  <Button variant="outline" className="text-green-600 border-green-600">
-                    Apply
-                  </Button>
-                </div>
+                {appliedDiscount ? (
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between p-3 bg-green-50 border border-green-200 rounded-lg">
+                      <div>
+                        <div className="font-medium text-green-800">
+                          {appliedDiscount.code} ({appliedDiscount.percentageOff}% off)
+                        </div>
+                        <div className="text-sm text-green-600">
+                          Discount: -৳{appliedDiscount.discountAmount.toFixed(2)}
+                        </div>
+                      </div>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={handleRemoveDiscount}
+                        className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                      >
+                        Remove
+                      </Button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    <div className="flex gap-2">
+                      <Input
+                        placeholder="Discount code or gift card"
+                        value={formData.discountCode}
+                        onChange={(e) => handleInputChange("discountCode", e.target.value)}
+                        disabled={discountLoading}
+                        className={discountError ? "border-red-300 focus:border-red-400" : ""}
+                      />
+                      <Button 
+                        variant="outline" 
+                        className="text-green-600 border-green-600 hover:bg-green-50"
+                        onClick={handleApplyDiscount}
+                        disabled={discountLoading || !formData.discountCode.trim()}
+                      >
+                        {discountLoading ? "Applying..." : "Apply"}
+                      </Button>
+                    </div>
+                    {discountError && (
+                      <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
+                        <div className="text-sm text-red-600 font-medium">
+                          {discountError}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
               </CardContent>
             </Card>
 
@@ -508,6 +647,12 @@ export default function CheckoutPage() {
                   <span>Shipping 🚚</span>
                   <span>৳{shippingCost.toFixed(2)}</span>
                 </div>
+                {appliedDiscount && (
+                  <div className="flex justify-between text-green-600">
+                    <span>Discount ({appliedDiscount.code})</span>
+                    <span>-৳{appliedDiscount.discountAmount.toFixed(2)}</span>
+                  </div>
+                )}
                 <Separator />
                 <div className="flex justify-between text-lg font-bold">
                   <span>Total</span>

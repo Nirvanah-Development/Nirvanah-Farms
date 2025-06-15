@@ -19,18 +19,18 @@ export type Office = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  officeName: string;
-  location: string;
+  officeName?: string;
+  location?: string;
   locationUrl?: string;
   phone?: string;
   email?: string;
-  officeCode: string;
-  employees: number;
-  charitable: number;
+  officeCode?: string;
+  employees?: number;
+  charitable?: number;
   orders?: number;
   target?: string;
-  status: "gifted" | "processing" | "donated" | "target_filled";
-  shipDate: string;
+  status?: "gifted" | "processing" | "donated" | "target_filled";
+  shipDate?: string;
   image?: {
     asset?: {
       _ref: string;
@@ -45,7 +45,7 @@ export type Office = {
   };
   description?: string;
   supportStaff?: Array<{
-    name: string;
+    name?: string;
     _key: string;
   }>;
   isActive?: boolean;
@@ -57,12 +57,12 @@ export type Address = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  name: string;
+  name?: string;
   email?: string;
-  address: string;
-  city: string;
-  state: string;
-  zip: string;
+  address?: string;
+  city?: string;
+  state?: string;
+  zip?: string;
   default?: boolean;
   createdAt?: string;
 };
@@ -73,18 +73,18 @@ export type Order = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  orderNumber: string;
+  orderNumber?: string;
   clerkUserId?: string;
-  customerName: string;
-  phoneNumber: string;
+  customerName?: string;
+  phoneNumber?: string;
   alternativePhone?: string;
-  email: string;
+  email?: string;
   officeCode?: string;
-  district: "dhaka_city" | "chittagong" | "sylhet" | "rajshahi" | "khulna" | "barisal" | "rangpur" | "mymensingh";
-  thana: "dhanmondi" | "gulshan" | "banani" | "uttara" | "mirpur" | "tejgaon" | "wari" | "old_dhaka";
-  shippingMethod: "inside_dhaka" | "inside_chittagong" | "outside_cities";
-  shippingCost: number;
-  paymentMethod: "cod" | "mobile_banking" | "bank_transfer";
+  district?: "dhaka_city" | "chittagong" | "sylhet" | "rajshahi" | "khulna" | "barisal" | "rangpur" | "mymensingh";
+  thana?: "dhanmondi" | "gulshan" | "banani" | "uttara" | "mirpur" | "tejgaon" | "wari" | "old_dhaka";
+  shippingMethod?: "inside_dhaka" | "inside_chittagong" | "outside_cities";
+  shippingCost?: number;
+  paymentMethod?: "cod" | "mobile_banking" | "bank_transfer";
   products?: Array<{
     product?: {
       _ref: string;
@@ -93,23 +93,52 @@ export type Order = {
       [internalGroqTypeReferenceTo]?: "product";
     };
     quantity?: number;
-    priceAtTime: number;
+    priceAtTime?: number;
     _key: string;
   }>;
-  subtotal: number;
+  subtotal?: number;
   discountAmount?: number;
   discountCode?: string;
-  totalPrice: number;
-  currency: string;
+  discountCodeId?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "discountCode";
+  };
+  totalPrice?: number;
+  currency?: string;
   address?: {
-    fullAddress: string;
-    district: string;
-    thana: string;
-    name: string;
+    fullAddress?: string;
+    district?: string;
+    thana?: string;
+    name?: string;
   };
   status?: "pending" | "processing" | "out_for_delivery" | "delivered" | "cancelled";
-  orderDate: string;
+  orderDate?: string;
   notes?: string;
+};
+
+export type DiscountCode = {
+  _id: string;
+  _type: "discountCode";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  code?: string;
+  name?: string;
+  percentageOff?: number;
+  maxUsageCount?: number;
+  currentUsageCount?: number;
+  startDate?: string;
+  endDate?: string;
+  applicableProducts?: Array<{
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    _key: string;
+    [internalGroqTypeReferenceTo]?: "product";
+  }>;
+  isActive?: boolean;
 };
 
 export type Product = {
@@ -118,8 +147,8 @@ export type Product = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  name: string;
-  slug: Slug;
+  name?: string;
+  slug?: Slug;
   images?: Array<{
     asset?: {
       _ref: string;
@@ -152,8 +181,8 @@ export type Product = {
     _type: "block";
     _key: string;
   }>;
-  regularPrice: number;
-  salePrice: number;
+  regularPrice?: number;
+  salePrice?: number;
   categories?: Array<{
     _ref: string;
     _type: "reference";
@@ -170,8 +199,8 @@ export type Category = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  title: string;
-  slug: Slug;
+  title?: string;
+  slug?: Slug;
   description?: string;
   range?: number;
   featured?: boolean;
@@ -296,7 +325,7 @@ export type Geopoint = {
 
 export type Slug = {
   _type: "slug";
-  current: string;
+  current?: string;
   source?: string;
 };
 
@@ -307,23 +336,23 @@ export type SanityAssetSourceData = {
   url?: string;
 };
 
-export type AllSanitySchemaTypes = Office | Address | Order | Product | Category | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
+export type AllSanitySchemaTypes = Office | Address | Order | DiscountCode | Product | Category | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./sanity/lib/office-queries.ts
 // Variable: officesQuery
 // Query: *[_type == "office"] | order(shipDate desc) {    _id,    officeName,    location,    locationUrl,    officeCode,    employees,    charitable,    orders,    target,    status,    shipDate,    isActive,    image  }
 export type OfficesQueryResult = Array<{
   _id: string;
-  officeName: string;
-  location: string;
+  officeName: string | null;
+  location: string | null;
   locationUrl: string | null;
-  officeCode: string;
-  employees: number;
-  charitable: number;
+  officeCode: string | null;
+  employees: number | null;
+  charitable: number | null;
   orders: number | null;
   target: string | null;
-  status: "donated" | "gifted" | "processing" | "target_filled";
-  shipDate: string;
+  status: "donated" | "gifted" | "processing" | "target_filled" | null;
+  shipDate: string | null;
   isActive: boolean | null;
   image: {
     asset?: {
@@ -342,16 +371,16 @@ export type OfficesQueryResult = Array<{
 // Query: *[_type == "office" && officeCode match $searchTerm + "*"] | order(shipDate desc) {    _id,    officeName,    location,    locationUrl,    officeCode,    employees,    charitable,    orders,    target,    status,    shipDate,    isActive,    image  }
 export type SearchOfficesQueryResult = Array<{
   _id: string;
-  officeName: string;
-  location: string;
+  officeName: string | null;
+  location: string | null;
   locationUrl: string | null;
-  officeCode: string;
-  employees: number;
-  charitable: number;
+  officeCode: string | null;
+  employees: number | null;
+  charitable: number | null;
   orders: number | null;
   target: string | null;
-  status: "donated" | "gifted" | "processing" | "target_filled";
-  shipDate: string;
+  status: "donated" | "gifted" | "processing" | "target_filled" | null;
+  shipDate: string | null;
   isActive: boolean | null;
   image: {
     asset?: {
@@ -369,24 +398,24 @@ export type SearchOfficesQueryResult = Array<{
 // Variable: officeCodesQuery
 // Query: *[_type == "office"]{officeCode}
 export type OfficeCodesQueryResult = Array<{
-  officeCode: string;
+  officeCode: string | null;
 }>;
 // Variable: query
 // Query: *[_type == "office" && _id == $officeId][0]{    _id,    officeName,    location,    locationUrl,    phone,    email,    officeCode,    employees,    charitable,    orders,    target,    status,    shipDate,    isActive,    image,    description,    supportStaff  }
 export type QueryResult = {
   _id: string;
-  officeName: string;
-  location: string;
+  officeName: string | null;
+  location: string | null;
   locationUrl: string | null;
   phone: string | null;
   email: string | null;
-  officeCode: string;
-  employees: number;
-  charitable: number;
+  officeCode: string | null;
+  employees: number | null;
+  charitable: number | null;
   orders: number | null;
   target: string | null;
-  status: "donated" | "gifted" | "processing" | "target_filled";
-  shipDate: string;
+  status: "donated" | "gifted" | "processing" | "target_filled" | null;
+  shipDate: string | null;
   isActive: boolean | null;
   image: {
     asset?: {
@@ -402,7 +431,7 @@ export type QueryResult = {
   } | null;
   description: string | null;
   supportStaff: Array<{
-    name: string;
+    name?: string;
     _key: string;
   }> | null;
 } | null;
@@ -419,8 +448,8 @@ export type PRODUCT_BY_SLUG_QUERYResult = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  name: string;
-  slug: Slug;
+  name?: string;
+  slug?: Slug;
   images?: Array<{
     asset?: {
       _ref: string;
@@ -453,8 +482,8 @@ export type PRODUCT_BY_SLUG_QUERYResult = {
     _type: "block";
     _key: string;
   }>;
-  regularPrice: number;
-  salePrice: number;
+  regularPrice?: number;
+  salePrice?: number;
   categories?: Array<{
     _ref: string;
     _type: "reference";
@@ -472,18 +501,18 @@ export type MY_ORDERS_QUERYResult = Array<{
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  orderNumber: string;
+  orderNumber?: string;
   clerkUserId?: string;
-  customerName: string;
-  phoneNumber: string;
+  customerName?: string;
+  phoneNumber?: string;
   alternativePhone?: string;
-  email: string;
+  email?: string;
   officeCode?: string;
-  district: "barisal" | "chittagong" | "dhaka_city" | "khulna" | "mymensingh" | "rajshahi" | "rangpur" | "sylhet";
-  thana: "banani" | "dhanmondi" | "gulshan" | "mirpur" | "old_dhaka" | "tejgaon" | "uttara" | "wari";
-  shippingMethod: "inside_chittagong" | "inside_dhaka" | "outside_cities";
-  shippingCost: number;
-  paymentMethod: "bank_transfer" | "cod" | "mobile_banking";
+  district?: "barisal" | "chittagong" | "dhaka_city" | "khulna" | "mymensingh" | "rajshahi" | "rangpur" | "sylhet";
+  thana?: "banani" | "dhanmondi" | "gulshan" | "mirpur" | "old_dhaka" | "tejgaon" | "uttara" | "wari";
+  shippingMethod?: "inside_chittagong" | "inside_dhaka" | "outside_cities";
+  shippingCost?: number;
+  paymentMethod?: "bank_transfer" | "cod" | "mobile_banking";
   products: Array<{
     product: {
       _id: string;
@@ -491,8 +520,8 @@ export type MY_ORDERS_QUERYResult = Array<{
       _createdAt: string;
       _updatedAt: string;
       _rev: string;
-      name: string;
-      slug: Slug;
+      name?: string;
+      slug?: Slug;
       images?: Array<{
         asset?: {
           _ref: string;
@@ -525,8 +554,8 @@ export type MY_ORDERS_QUERYResult = Array<{
         _type: "block";
         _key: string;
       }>;
-      regularPrice: number;
-      salePrice: number;
+      regularPrice?: number;
+      salePrice?: number;
       categories?: Array<{
         _ref: string;
         _type: "reference";
@@ -537,22 +566,28 @@ export type MY_ORDERS_QUERYResult = Array<{
       status?: "sale";
     } | null;
     quantity?: number;
-    priceAtTime: number;
+    priceAtTime?: number;
     _key: string;
   }> | null;
-  subtotal: number;
+  subtotal?: number;
   discountAmount?: number;
   discountCode?: string;
-  totalPrice: number;
-  currency: string;
+  discountCodeId?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "discountCode";
+  };
+  totalPrice?: number;
+  currency?: string;
   address?: {
-    fullAddress: string;
-    district: string;
-    thana: string;
-    name: string;
+    fullAddress?: string;
+    district?: string;
+    thana?: string;
+    name?: string;
   };
   status?: "cancelled" | "delivered" | "out_for_delivery" | "pending" | "processing";
-  orderDate: string;
+  orderDate?: string;
   notes?: string;
 }>;
 
