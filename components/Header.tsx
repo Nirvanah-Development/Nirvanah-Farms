@@ -5,7 +5,8 @@ import Container from "./Container";
 import Logo from "./Logo";
 import HeaderMenu from "./HeaderMenu";
 import MobileMenu from "./MobileMenu";
-import { ShoppingCart } from "lucide-react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 import { useCart } from "@/contexts/CartContext";
 import { useCartStore } from "@/store/cart";
 import { Button } from "./ui/button";
@@ -36,8 +37,8 @@ const Header = () => {
 
         {/* Right Section - Action Buttons */}
         <div className="flex items-center gap-1 sm:gap-2 md:gap-3 justify-end flex-shrink-0">
-          {/* Mango Calendar Button */}
-          <Button
+          {/* Mango Calendar Button; Removing now, later we will add it back */}
+          {/* <Button
             variant="ghost"
             size="sm"
             className="
@@ -74,7 +75,10 @@ const Header = () => {
             "
             onClick={openCart}
           >
-            <ShoppingCart className="h-4 w-4 sm:h-5 sm:w-5" />
+            <FontAwesomeIcon 
+              icon={faShoppingCart} 
+              className="h-4 w-4 sm:h-5 sm:w-5" 
+            />
             {itemCount > 0 && (
               <span className="
                 absolute -top-1 -right-1 

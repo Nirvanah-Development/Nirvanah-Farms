@@ -1,4 +1,5 @@
 import "./globals.css";
+import "@/lib/fontawesome";
 import { Toaster } from "react-hot-toast";
 import { CartProvider } from "@/contexts/CartContext";
 import CartSidebar from "@/components/CartSidebar";

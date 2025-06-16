@@ -180,6 +180,13 @@ export const orderType = defineType({
       type: "string",
     }),
     defineField({
+      name: "discountCodeId",
+      title: "Discount Code Reference",
+      type: "reference",
+      to: [{ type: "discountCode" }],
+      description: "Reference to the discount code document",
+    }),
+    defineField({
       name: "totalPrice",
       title: "Total Price",
       type: "number",

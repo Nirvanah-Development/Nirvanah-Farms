@@ -38,6 +38,7 @@ export async function POST(request: NextRequest) {
       subtotal: orderData.subtotal,
       discountAmount: orderData.discountAmount || 0,
       discountCode: orderData.discountCode,
+      discountCodeId: orderData.discountCodeId,
       totalPrice: orderData.totalPrice,
       currency: orderData.currency || "BDT",
       address: orderData.address,
