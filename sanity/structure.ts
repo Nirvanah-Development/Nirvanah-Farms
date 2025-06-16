@@ -67,6 +67,8 @@ export const structure: StructureResolver = (S) =>
             .title('System Settings')
             .items([
               S.documentTypeListItem('address').title('Addresses'),
+              S.documentTypeListItem('careerEmail').title('Career Email Subscriptions'),
+              S.documentTypeListItem('contactMessage').title('Contact Messages'),
             ])
         ),
 
@@ -75,6 +77,6 @@ export const structure: StructureResolver = (S) =>
 
       // All Documents (for advanced users)
       ...S.documentTypeListItems().filter(
-        (listItem) => !['product', 'category', 'order', 'office', 'address'].includes(listItem.getId() || '')
+        (listItem) => !['product', 'category', 'order', 'office', 'address', 'careerEmail', 'contactMessage'].includes(listItem.getId() || '')
       ),
     ])

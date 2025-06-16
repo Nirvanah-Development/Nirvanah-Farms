@@ -201,10 +201,13 @@ export default function CheckoutPage() {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to create order");
+        const errorData = await response.json();
+        console.error("Order creation failed:", errorData);
+        throw new Error(errorData.error || "Failed to create order");
       }
 
       const result = await response.json();
+      console.log("Order created successfully:", result);
       
       // Update discount usage count if discount was applied
       if (appliedDiscount) {
@@ -227,7 +230,11 @@ export default function CheckoutPage() {
       // Clear cart and redirect to success page
       resetCart();
       toast.success("অর্ডার সফলভাবে তৈরি হয়েছে! (Order created successfully!)");
-      router.push(`/success?orderId=${result.orderNumber}`);
+      
+      // Add a small delay to ensure cart is cleared before navigation
+      setTimeout(() => {
+        router.push(`/success?orderNumber=${result.orderNumber}`);
+      }, 100);
       
     } catch (error) {
       console.error("Order creation error:", error);

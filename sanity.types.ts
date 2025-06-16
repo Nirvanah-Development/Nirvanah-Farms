@@ -13,6 +13,31 @@
  */
 
 // Source: schema.json
+export type ContactMessage = {
+  _id: string;
+  _type: "contactMessage";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  name?: string;
+  email?: string;
+  phone?: string;
+  message?: string;
+  submittedAt?: string;
+  status?: "new" | "in_progress" | "resolved";
+};
+
+export type CareerEmail = {
+  _id: string;
+  _type: "careerEmail";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  email?: string;
+  subscribedAt?: string;
+  status?: "active" | "unsubscribed";
+};
+
 export type Office = {
   _id: string;
   _type: "office";
@@ -336,7 +361,7 @@ export type SanityAssetSourceData = {
   url?: string;
 };
 
-export type AllSanitySchemaTypes = Office | Address | Order | DiscountCode | Product | Category | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
+export type AllSanitySchemaTypes = ContactMessage | CareerEmail | Office | Address | Order | DiscountCode | Product | Category | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./sanity/lib/office-queries.ts
 // Variable: officesQuery

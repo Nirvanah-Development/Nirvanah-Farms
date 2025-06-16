@@ -14,6 +14,11 @@ interface SidebarProps {
 const SideMenu: FC<SidebarProps> = ({ isOpen, onClose }) => {
   const pathname = usePathname();
   const sidebarRef = useOutsideClick<HTMLDivElement>(onClose);
+  
+  const handleLinkClick = () => {
+    onClose(); // Close the side menu when any link is clicked
+  };
+
   return (
     <div
       className={`fixed inset-y-0 h-screen left-0 z-50 w-full bg-black/50 text-white/70 shadow-xl ${
@@ -39,6 +44,7 @@ const SideMenu: FC<SidebarProps> = ({ isOpen, onClose }) => {
             <Link
               href={item?.href}
               key={item?.title}
+              onClick={handleLinkClick}
               className={`hover:text-shop_light_green hoverEffect ${
                 pathname === item?.href && "text-white"
               }`}
