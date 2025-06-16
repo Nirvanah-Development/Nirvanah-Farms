@@ -19,7 +19,7 @@ const Footer = () => {
             <Logo />
             <SubText>
               Discover curated furniture collections at Shopcartyt, blending
-              style and comfort to elevate your living spaces.
+              style and comfort to elevate your living spaces. Thank you for visiting our website.
             </SubText>
             <SocialMedia
               className="text-darkColor/60"
