@@ -80,7 +80,7 @@ export async function POST(request: NextRequest) {
     let applicableItems: CartItem[] = cartItems;
     
     if (discountCode.applicableProducts && discountCode.applicableProducts.length > 0) {
-      const applicableProductIds = discountCode.applicableProducts.map((p: any) => p._id);
+      const applicableProductIds = discountCode.applicableProducts.map((p: { _id: string }) => p._id);
       applicableItems = cartItems.filter((item: CartItem) => 
         applicableProductIds.includes(item.product._id)
       );

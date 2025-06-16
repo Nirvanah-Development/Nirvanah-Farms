@@ -54,7 +54,7 @@ const ContactPage = () => {
         setMessage(data.error || 'Something went wrong. Please try again.');
         setMessageType('error');
       }
-    } catch (error) {
+    } catch {
       setMessage('Network error. Please check your connection and try again.');
       setMessageType('error');
     } finally {
@@ -78,13 +78,13 @@ const ContactPage = () => {
           <div className="lg:w-1/2">
             <div className="bg-gray-50 p-8 rounded-lg h-full">
               <p className="text-lg text-gray-700 leading-relaxed mb-8">
-                We're here to help! Whether you have questions about our Mangoes, need 
-                help with your order, or just want to share your thoughts, don't hesitate to get in 
+                We&rsquo;re here to help! Whether you have questions about our Mangoes, need 
+                help with your order, or just want to share your thoughts, don&rsquo;t hesitate to get in 
                 touch.
               </p>
               
               <p className="text-base text-gray-600 mb-8">
-                You can also fill out the form, and we'll get back to you as soon as possible.
+                You can also fill out the form, and we&rsquo;ll get back to you as soon as possible.
               </p>
 
               {/* Contact Details */}

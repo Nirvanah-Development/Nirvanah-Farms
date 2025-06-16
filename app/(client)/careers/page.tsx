@@ -34,7 +34,7 @@ const CareersPage = () => {
         setMessage(data.error || 'Something went wrong. Please try again.');
         setMessageType('error');
       }
-    } catch (error) {
+    } catch {
       setMessage('Network error. Please check your connection and try again.');
       setMessageType('error');
     } finally {
@@ -55,9 +55,9 @@ const CareersPage = () => {
         {/* Content */}
         <div className="text-left mb-12">
           <p className="text-lg text-gray-700 leading-relaxed mb-8">
-            We're always looking for great talent, but at this time, we have no open roles.
-            If you'd like to be notified when new opportunities become available, please drop your email below. 
-            We'll keep you updated with our latest career news.
+            We&rsquo;re always looking for great talent, but at this time, we have no open roles.
+            If you&rsquo;d like to be notified when new opportunities become available, please drop your email below. 
+            We&rsquo;ll keep you updated with our latest career news.
           </p>
         </div>
 

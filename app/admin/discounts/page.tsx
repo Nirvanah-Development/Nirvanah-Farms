@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { client } from "@/sanity/lib/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -37,7 +37,7 @@ export default function DiscountCodesAdmin() {
 
   useEffect(() => {
     filterCodes();
-  }, [discountCodes, searchTerm, statusFilter]);
+  }, [discountCodes, searchTerm, statusFilter, filterCodes]);
 
   const fetchDiscountCodes = async () => {
     try {
@@ -67,7 +67,7 @@ export default function DiscountCodesAdmin() {
     }
   };
 
-  const filterCodes = () => {
+  const filterCodes = useCallback(() => {
     let filtered = discountCodes;
 
     // Filter by search term
@@ -100,7 +100,7 @@ export default function DiscountCodesAdmin() {
     }
 
     setFilteredCodes(filtered);
-  };
+  }, [discountCodes, searchTerm, statusFilter]);
 
   const getStatusBadge = (code: DiscountCode) => {
     const now = new Date();
@@ -133,7 +133,7 @@ export default function DiscountCodesAdmin() {
       toast.success(`${selectedCodes.length} codes activated`);
       setSelectedCodes([]);
       fetchDiscountCodes();
-    } catch (error) {
+    } catch {
       toast.error("Failed to activate codes");
     }
   };
@@ -149,7 +149,7 @@ export default function DiscountCodesAdmin() {
       toast.success(`${selectedCodes.length} codes deactivated`);
       setSelectedCodes([]);
       fetchDiscountCodes();
-    } catch (error) {
+    } catch {
       toast.error("Failed to deactivate codes");
     }
   };
