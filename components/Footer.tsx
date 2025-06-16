@@ -6,8 +6,6 @@ import SocialMedia from "./SocialMedia";
 import { SubText, SubTitle } from "./ui/text";
 import { categoriesData, quickLinksData } from "@/constants/data";
 import Link from "next/link";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
 
 const Footer = () => {
   return (
