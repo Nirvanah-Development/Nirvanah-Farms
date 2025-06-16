@@ -24,7 +24,7 @@ const data: ContactItemData[] = [
   },
   {
     title: "Working Hours",
-    subtitle: "Sat - Thu: 09:00AM - 08:00PM",
+    subtitle: "Sat - Thu: 09:00AM - 09:00PM",
     icon: (
       <Clock className="h-6 w-6 text-gray-600 group-hover:text-primary transition-colors" />
     ),
