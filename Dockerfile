@@ -21,6 +21,8 @@ COPY . .
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV SKIP_ENV_VALIDATION=1
+ENV CSS_MINIMIZE=false
+ENV DISABLE_CSS_MINIFY=true
 
 # Build the application with increased memory and timeout
 RUN NODE_OPTIONS="--max-old-space-size=4096" npm run build

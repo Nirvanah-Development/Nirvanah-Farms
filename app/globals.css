@@ -1,8 +1,5 @@
 @import "tailwindcss";
-
-@plugin "tailwindcss-animate";
-
-@custom-variant dark (&:is(.dark *));
+@import "tailwindcss/theme" reference;
 
 @theme {
   --font-poppins: "Poppins", sans-serif;
