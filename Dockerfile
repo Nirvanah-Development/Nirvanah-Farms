@@ -20,9 +20,10 @@ COPY . .
 # Set environment variables for build
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
+ENV SKIP_ENV_VALIDATION=1
 
-# Build the application
-RUN npm run build
+# Build the application with increased memory and timeout
+RUN NODE_OPTIONS="--max-old-space-size=4096" npm run build
 
 # Production image, copy all the files and run next
 FROM base AS runner
@@ -49,7 +50,7 @@ USER nextjs
 
 EXPOSE 3000
 
-ENV PORT 3000
-ENV HOSTNAME "0.0.0.0"
+ENV PORT=3000
+ENV HOSTNAME="0.0.0.0"
 
 CMD ["node", "server.js"] 
