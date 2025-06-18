@@ -2,7 +2,7 @@
 
 import type React from "react"
 import { useState, useRef, useEffect } from "react"
-import LeafButton from "./leaf-button"
+// import LeafButton from "./leaf-button"
 import Container from "./Container"
 
 interface VideoHeroSectionProps {
@@ -30,9 +30,9 @@ const VideoHeroSection: React.FC<VideoHeroSectionProps> = ({
     setIsVideoError(true)
   }, [])
 
-  const handleVisitFarm = () => {
-    console.log("Visit farm clicked")
-  }
+  // const handleVisitFarm = () => {
+  //   console.log("Visit farm clicked")
+  // }
 
   return (
     <section className="relative w-full h-[45vh] sm:h-[80vh] lg:h-screen min-h-[390px] max-h-[800px] overflow-hidden">
@@ -95,7 +95,7 @@ const VideoHeroSection: React.FC<VideoHeroSectionProps> = ({
             </div>
 
             {/* Visit Farm Button */}
-            <div className="flex justify-start">
+            {/* <div className="flex justify-start">
               <LeafButton
                 onClick={handleVisitFarm}
                 size="lg"
@@ -103,7 +103,7 @@ const VideoHeroSection: React.FC<VideoHeroSectionProps> = ({
               >
                 Visit Farm
               </LeafButton>
-            </div>
+            </div> */}
 
             {/* Decorative elements */}
             <div className="hidden md:block absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">

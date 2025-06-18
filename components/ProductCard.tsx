@@ -62,7 +62,7 @@ const ProductCard = ({ product }: { product: Product }) => {
             </p>
           )}
           
-          <Title className="text-sm line-clamp-2 min-h-[2.5rem] flex-1">
+          <Title className="text-sm min-h-[2.5rem] flex-1">
             {product?.name}
           </Title>
 

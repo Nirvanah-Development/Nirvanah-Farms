@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { 
   faHome, 
   faShoppingCart, 
-  faUser, 
+  faPhone, 
   faThLarge 
 } from "@fortawesome/free-solid-svg-icons";
 import { useCart } from "@/contexts/CartContext";
@@ -36,9 +36,9 @@ const MobileFooterNav = () => {
       isButton: true,
     },
     {
-      label: "account",
-      href: "#",
-      icon: <FontAwesomeIcon icon={faUser} size="lg" />,
+      label: "Contact",
+      href: "/contact",
+      icon: <FontAwesomeIcon icon={faPhone} size="lg" />,
     },
   ];
 
