@@ -49,14 +49,64 @@ const districts = [
 ];
 
 const thanas = [
-  { value: "dhanmondi", label: "Dhanmondi" },
-  { value: "gulshan", label: "Gulshan" },
+  { value: "adabor", label: "Adabor" },
+  { value: "airport", label: "Airport" },
+  { value: "ati_bazar_keraniganj", label: "Ati Bazar (Keraniganj)" },
+  { value: "azompur", label: "Azompur" },
+  { value: "badda", label: "Badda" },
   { value: "banani", label: "Banani" },
-  { value: "uttara", label: "Uttara" },
+  { value: "bangshal", label: "Bangshal" },
+  { value: "bashundhara_r_a", label: "Bashundhara R/A" },
+  { value: "bhashantek", label: "Bhashantek" },
+  { value: "cantonment", label: "Cantonment" },
+  { value: "chalkbazar", label: "Chalkbazar" },
+  { value: "dakshin_khan", label: "Dakshin khan" },
+  { value: "darus_salam", label: "Darus Salam" },
+  { value: "demra", label: "Demra" },
+  { value: "dhanmondi", label: "Dhanmondi" },
+  { value: "gandaria", label: "Gandaria" },
+  { value: "gulistan", label: "Gulistan" },
+  { value: "gulshan", label: "Gulshan" },
+  { value: "hatirjheel", label: "Hatirjheel" },
+  { value: "hazaribag", label: "Hazaribag" },
+  { value: "jattrabari", label: "Jattrabari" },
+  { value: "kadamtali", label: "Kadamtali" },
+  { value: "kafrul", label: "Kafrul" },
+  { value: "kalabagan", label: "Kalabagan" },
+  { value: "kamrangirchar", label: "Kamrangirchar" },
+  { value: "khilgaon", label: "Khilgaon" },
+  { value: "khilkhet", label: "Khilkhet" },
+  { value: "kotwali", label: "Kotwali" },
+  { value: "lalbagh", label: "Lalbagh" },
   { value: "mirpur", label: "Mirpur" },
+  { value: "mohammadpur", label: "Mohammadpur" },
+  { value: "motijheel", label: "Motijheel" },
+  { value: "mugda", label: "Mugda" },
+  { value: "new_market", label: "New Market" },
+  { value: "pallabi", label: "Pallabi" },
+  { value: "paltan", label: "Paltan" },
+  { value: "panthapath", label: "Panthapath" },
+  { value: "purbachal", label: "Purbachal" },
+  { value: "ramna", label: "Ramna" },
+  { value: "rampura", label: "Rampura" },
+  { value: "rupnagar", label: "Rupnagar" },
+  { value: "sabujbag", label: "Sabujbag" },
+  { value: "shah_ali", label: "Shah Ali" },
+  { value: "shah_ali_market", label: "Shah Ali Market" },
+  { value: "shahbag", label: "Shahbag" },
+  { value: "shahjahanpur", label: "Shahjahanpur" },
+  { value: "sher_e_bangla_nagar", label: "Sher-e-Bangla Nagar" },
+  { value: "shyampur", label: "Shyampur" },
+  { value: "sutrapur", label: "Sutrapur" },
   { value: "tejgaon", label: "Tejgaon" },
+  { value: "tejgaon_industrial_area", label: "Tejgaon Industrial Area" },
+  { value: "turag", label: "Turag" },
+  { value: "uttara", label: "Uttara" },
+  { value: "uttarkhan", label: "Uttarkhan" },
+  { value: "vasantek", label: "Vasantek" },
+  { value: "vatara", label: "Vatara" },
   { value: "wari", label: "Wari" },
-  { value: "old_dhaka", label: "Old Dhaka" },
+  { value: "zone_not_clear", label: "Zone Not Clear" }
 ];
 
 const shippingOptions = [
@@ -455,7 +505,7 @@ export default function CheckoutPage() {
                         <SelectTrigger className={errors.district ? "border-red-500" : ""}>
                           <SelectValue placeholder="Select District" />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent side="bottom">
                           {districts.map((district) => (
                             <SelectItem key={district.value} value={district.value}>
                               {district.label}
@@ -479,7 +529,7 @@ export default function CheckoutPage() {
                         <SelectTrigger className={errors.thana ? "border-red-500" : ""}>
                           <SelectValue placeholder="Select Thana" />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent side="bottom">
                           {thanas.map((thana) => (
                             <SelectItem key={thana.value} value={thana.value}>
                               {thana.label}
