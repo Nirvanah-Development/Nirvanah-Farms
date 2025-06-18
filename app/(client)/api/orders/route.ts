@@ -1,6 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { client, writeClient } from "@/sanity/lib/client";
 
+interface ProductItem {
+  _key?: string;
+  product: {
+    _ref: string;
+    _type: string;
+  };
+  quantity: number;
+  priceAtTime: number;
+}
+
 export async function POST(request: NextRequest) {
   try {
     const orderData = await request.json();
@@ -20,6 +30,12 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // Ensure all products have _key properties
+    const productsWithKeys = orderData.products.map((product: ProductItem) => ({
+      ...product,
+      _key: product._key || crypto.randomUUID()
+    }));
+
     // Create the order document in Sanity using write client
     const result = await writeClient.create({
       _type: "order",
@@ -34,7 +50,7 @@ export async function POST(request: NextRequest) {
       shippingMethod: orderData.shippingMethod,
       shippingCost: orderData.shippingCost,
       paymentMethod: orderData.paymentMethod,
-      products: orderData.products,
+      products: productsWithKeys,
       subtotal: orderData.subtotal,
       discountAmount: orderData.discountAmount || 0,
       discountCode: orderData.discountCode,

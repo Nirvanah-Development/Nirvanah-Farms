@@ -48,6 +48,7 @@ export async function createOrder(
           _ref: productId,
         },
         quantity,
+        priceAtTime: item.product.salePrice || item.product.regularPrice || 0,
       });
       stockUpdates.push({ productId, quantity });
     }

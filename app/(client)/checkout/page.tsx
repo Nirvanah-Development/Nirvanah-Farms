@@ -169,6 +169,7 @@ export default function CheckoutPage() {
         shippingCost,
         paymentMethod: "cod",
         products: items.map(item => ({
+          _key: crypto.randomUUID(),
           product: { _ref: item.product._id, _type: "reference" },
           quantity: item.quantity,
           priceAtTime: item.product.status === 'sale' 
