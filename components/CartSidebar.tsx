@@ -22,6 +22,10 @@ export default function CartSidebar() {
 
   const subtotal = items.reduce(
     (sum, item) => {
+      if (!item || !item.product) {
+        return sum;
+      }
+      
       const regularPrice = item.product.regularPrice || 0;
       const salePrice = item.product.salePrice || 0;
       const price = item.product.status === 'sale' ? salePrice : regularPrice;
@@ -54,7 +58,7 @@ export default function CartSidebar() {
               Your cart is empty.
             </div>
           ) : (
-            items.map((item) => {
+            items.filter(item => item && item.product).map((item) => {
               // Use the correct image handling logic for Product type
               const imageUrl =
                 item.product.images && item.product.images[0]

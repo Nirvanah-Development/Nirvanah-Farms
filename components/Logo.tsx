@@ -1,32 +1,40 @@
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import Image from "next/image";
 import React from "react";
 
 const Logo = ({
   className,
-  spanDesign,
+  width = 180,
+  height = 60,
 }: {
   className?: string;
   spanDesign?: string;
+  width?: number;
+  height?: number;
 }) => {
   return (
-    <Link href={"/"} className="inline-flex">
-      <h2
+    <Link href={"/"} className="inline-flex items-center">
+      <div
         className={cn(
-          "text-2xl text-shop_dark_green font-black tracking-wider hover:text-shop_light_green hoverEffect group font-sans",
+          "relative transition-all duration-300 ease-in-out hover:scale-105",
           className
         )}
       >
-        Nirvanah
-        <span
-          className={cn(
-            "text-shop_light_green group-hover:text-shop_dark_green hoverEffect",
-            spanDesign
-          )}
-        >
-          Farms
-        </span>
-      </h2>
+        <Image
+          src="/images/main logoAsset.png"
+          alt="Nirvanah Farms Logo"
+          width={width}
+          height={height}
+          priority
+          className="w-auto h-auto max-w-full object-contain"
+          style={{
+            maxHeight: '60px',
+            width: 'auto',
+          }}
+          sizes="(max-width: 640px) 120px, (max-width: 768px) 150px, 180px"
+        />
+      </div>
     </Link>
   );
 };

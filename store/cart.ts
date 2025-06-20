@@ -20,13 +20,24 @@ interface CartStore {
 // Migration function to handle old cart data
 const migrateCartData = (persistedState: any, version: number) => {
   // If no version or old version, reset the cart
-  if (!persistedState?.version || persistedState.version < 2) {
+  if (!persistedState?.version || persistedState.version < 3) {
     return {
       items: [],
       groupedItems: {},
-      version: 2,
+      version: 3,
     };
   }
+  
+  // Clean up any invalid items (missing product or invalid structure)
+  if (persistedState.items) {
+    persistedState.items = persistedState.items.filter((item: any) => 
+      item && 
+      item.product && 
+      item.product._id && 
+      typeof item.quantity === 'number'
+    );
+  }
+  
   return persistedState;
 };
 
@@ -35,7 +46,7 @@ export const useCartStore = create<CartStore>()(
     (set, get) => ({
       items: [],
       groupedItems: {},
-      version: 2,
+      version: 3,
       addItem: (item) => {
         set((state) => {
           const existingItem = state.items.find(
@@ -119,7 +130,7 @@ export const useCartStore = create<CartStore>()(
     }),
     {
       name: 'cart-storage',
-      version: 2,
+      version: 3,
       migrate: migrateCartData,
     }
   )
