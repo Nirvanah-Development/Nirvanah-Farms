@@ -16,13 +16,20 @@ const nextConfig: NextConfig = {
   },
   experimental: {
     optimizeCss: false, // Disable CSS optimization that might cause issues
+    turbo: {
+      rules: {
+        "*.css": {
+          loaders: ["css-loader"],
+          as: "*.css",
+        },
+      },
+    },
   },
-  webpack: (config, { isServer }) => {
+  webpack: (config, { isServer, dev }) => {
     // Disable CSS minification to prevent TailwindCSS v4 issues in Docker
-    if (!isServer) {
-      config.optimization.minimizer = config.optimization.minimizer?.filter(
-        (plugin: any) => !plugin.constructor.name.includes('CssMinimizerPlugin')
-      );
+    if (!isServer && !dev) {
+      config.optimization.minimize = false;
+      config.optimization.minimizer = [];
     }
     return config;
   },
