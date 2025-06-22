@@ -1,4 +1,4 @@
-import { Facebook, Linkedin, Youtube } from "lucide-react";
+import { Facebook, Linkedin } from "lucide-react";
 import React from "react";
 import {
   Tooltip,
@@ -14,11 +14,6 @@ interface Props {
   tooltipClassName?: string;
 }
 const socialLink = [
-  {
-    title: "Youtube",
-    href: "/",
-    icon: <Youtube className="w-5 h-5" />,
-  },
   {
     title: "Linkedin",
     href: "https://www.linkedin.com/in/sanjim-chowdhury-065b56251?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",

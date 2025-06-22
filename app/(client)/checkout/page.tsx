@@ -39,13 +39,6 @@ interface AppliedDiscount {
 
 const districts = [
   { value: "dhaka_city", label: "Dhaka City" },
-  { value: "chittagong", label: "Chittagong" },
-  { value: "sylhet", label: "Sylhet" },
-  { value: "rajshahi", label: "Rajshahi" },
-  { value: "khulna", label: "Khulna" },
-  { value: "barisal", label: "Barisal" },
-  { value: "rangpur", label: "Rangpur" },
-  { value: "mymensingh", label: "Mymensingh" },
 ];
 
 const thanas = [
