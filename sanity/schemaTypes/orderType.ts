@@ -1,5 +1,17 @@
 import { BasketIcon } from "@sanity/icons";
 import { defineArrayMember, defineField, defineType } from "sanity";
+import districtsData from "../../dataloaders/districts.json";
+import thanasData from "../../dataloaders/thana.json";
+
+const districts = districtsData.district.map(d => ({
+  title: d.name,
+  value: d.name.toLowerCase().replace(/[^a-z0-9]/g, '_').replace(/_+/g, '_'),
+}));
+
+const thanas = thanasData.thana.map(t => ({
+  title: t.name,
+  value: t.name.toLowerCase().replace(/[^a-z0-9]/g, '_').replace(/_+/g, '_'),
+}));
 
 export const orderType = defineType({
   name: "order",
@@ -52,16 +64,7 @@ export const orderType = defineType({
       type: "string",
       validation: (Rule) => Rule.required(),
       options: {
-        list: [
-          { title: "Dhaka City", value: "dhaka_city" },
-          { title: "Chittagong", value: "chittagong" },
-          { title: "Sylhet", value: "sylhet" },
-          { title: "Rajshahi", value: "rajshahi" },
-          { title: "Khulna", value: "khulna" },
-          { title: "Barisal", value: "barisal" },
-          { title: "Rangpur", value: "rangpur" },
-          { title: "Mymensingh", value: "mymensingh" },
-        ],
+        list: districts,
       },
     }),
     defineField({
@@ -70,18 +73,7 @@ export const orderType = defineType({
       type: "string",
       validation: (Rule) => Rule.required(),
       options: {
-        list: [
-          // Dhaka City thanas
-          { title: "Dhanmondi", value: "dhanmondi" },
-          { title: "Gulshan", value: "gulshan" },
-          { title: "Banani", value: "banani" },
-          { title: "Uttara", value: "uttara" },
-          { title: "Mirpur", value: "mirpur" },
-          { title: "Tejgaon", value: "tejgaon" },
-          { title: "Wari", value: "wari" },
-          { title: "Old Dhaka", value: "old_dhaka" },
-          // Add more thanas as needed
-        ],
+        list: thanas,
       },
     }),
     defineField({
