@@ -15,6 +15,9 @@ import { ShoppingBag, Phone, Truck } from "lucide-react";
 import Image from "next/image";
 import { urlFor } from "@/sanity/lib/image";
 import { toast } from "sonner";
+import districtsData from "@/dataloaders/districts.json";
+import thanasData from "@/dataloaders/thana.json";
+import { Combobox } from "@/components/ui/combobox";
 
 interface OrderFormData {
   customerName: string;
@@ -37,27 +40,18 @@ interface AppliedDiscount {
   discountAmount: number;
 }
 
-const districts = [
-  { value: "dhaka_city", label: "Dhaka City" },
-  { value: "chittagong", label: "Chittagong" },
-  { value: "sylhet", label: "Sylhet" },
-  { value: "rajshahi", label: "Rajshahi" },
-  { value: "khulna", label: "Khulna" },
-  { value: "barisal", label: "Barisal" },
-  { value: "rangpur", label: "Rangpur" },
-  { value: "mymensingh", label: "Mymensingh" },
-];
+interface District {
+  id: string;
+  value: string;
+  label: string;
+}
 
-const thanas = [
-  { value: "dhanmondi", label: "Dhanmondi" },
-  { value: "gulshan", label: "Gulshan" },
-  { value: "banani", label: "Banani" },
-  { value: "uttara", label: "Uttara" },
-  { value: "mirpur", label: "Mirpur" },
-  { value: "tejgaon", label: "Tejgaon" },
-  { value: "wari", label: "Wari" },
-  { value: "old_dhaka", label: "Old Dhaka" },
-];
+interface Thana {
+  id: string;
+  district_id: string;
+  value: string;
+  label: string;
+}
 
 const shippingOptions = [
   { value: "inside_dhaka", label: "ঢাকা সিটির ভিতরে (Inside Dhaka)", cost: 70 },
@@ -86,6 +80,25 @@ export default function CheckoutPage() {
   const [appliedDiscount, setAppliedDiscount] = useState<AppliedDiscount | null>(null);
   const [discountLoading, setDiscountLoading] = useState(false);
   const [discountError, setDiscountError] = useState<string | null>(null);
+  const [districts, setDistricts] = useState<District[]>([]);
+  const [allThanas, setAllThanas] = useState<Thana[]>([]);
+  const [filteredThanas, setFilteredThanas] = useState<Thana[]>([]);
+
+  useEffect(() => {
+    const loadedDistricts = districtsData.district.map(d => ({
+        id: d.id,
+        value: d.name.toLowerCase().replace(/[^a-z0-9]/g, '_').replace(/_+/g, '_'),
+        label: d.name
+    }));
+    const loadedThanas = thanasData.thana.map(t => ({
+        id: t.id,
+        district_id: t.district_id,
+        value: t.name.toLowerCase().replace(/[^a-z0-9]/g, '_').replace(/_+/g, '_'),
+        label: t.name
+    }));
+    setDistricts(loadedDistricts);
+    setAllThanas(loadedThanas);
+  }, []);
 
   // Calculate totals
   const subtotal = items.reduce((sum, item) => {
@@ -258,6 +271,19 @@ export default function CheckoutPage() {
       if (discountError) {
         setDiscountError(null);
       }
+    }
+  };
+
+  const handleDistrictChange = (value: string) => {
+    handleInputChange("district", value);
+    handleInputChange("thana", "");
+
+    const selectedDistrict = districts.find(d => d.value === value);
+    if (selectedDistrict) {
+      const relevantThanas = allThanas.filter(t => t.district_id === selectedDistrict.id);
+      setFilteredThanas(relevantThanas);
+    } else {
+      setFilteredThanas([]);
     }
   };
 
@@ -447,21 +473,14 @@ export default function CheckoutPage() {
                       <Label className="text-base font-medium">
                         জেলা/district <span className="text-red-500">*</span>
                       </Label>
-                      <Select
+                      <Combobox
+                        options={districts}
                         value={formData.district}
-                        onValueChange={(value) => handleInputChange("district", value)}
-                      >
-                        <SelectTrigger className={errors.district ? "border-red-500" : ""}>
-                          <SelectValue placeholder="Select District" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {districts.map((district) => (
-                            <SelectItem key={district.value} value={district.value}>
-                              {district.label}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                        onChange={handleDistrictChange}
+                        placeholder="Select District"
+                        searchPlaceholder="Search districts..."
+                        emptyText="No districts found."
+                      />
                       {errors.district && (
                         <p className="text-sm text-red-500 mt-1">{errors.district}</p>
                       )}
@@ -471,21 +490,15 @@ export default function CheckoutPage() {
                       <Label className="text-base font-medium">
                         থানা/thana <span className="text-red-500">*</span>
                       </Label>
-                      <Select
+                      <Combobox
+                        options={filteredThanas}
                         value={formData.thana}
-                        onValueChange={(value) => handleInputChange("thana", value)}
-                      >
-                        <SelectTrigger className={errors.thana ? "border-red-500" : ""}>
-                          <SelectValue placeholder="Select Thana" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {thanas.map((thana) => (
-                            <SelectItem key={thana.value} value={thana.value}>
-                              {thana.label}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                        onChange={(value) => handleInputChange("thana", value)}
+                        placeholder={!formData.district ? "Select district first" : "Select Thana"}
+                        searchPlaceholder="Search thanas..."
+                        emptyText="No thanas found."
+                        disabled={!formData.district || filteredThanas.length === 0}
+                      />
                       {errors.thana && (
                         <p className="text-sm text-red-500 mt-1">{errors.thana}</p>
                       )}
