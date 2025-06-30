@@ -101,23 +101,33 @@ const ContactPage = () => {
                   <FontAwesomeIcon icon={faPhone} className="text-shop_dark_green mt-1 text-lg" />
                   <div>
                     <p className="text-gray-800 font-medium">For Order Inquiries</p>
-                    <p className="text-gray-600">+20 100 080 1735 (WhatsApp Only)</p>
+                    <a 
+                      href="tel:+8801767515183" 
+                      className="text-gray-600 hover:text-shop_dark_green transition-colors duration-200 hover:underline cursor-pointer"
+                    >
+                      01767515183 (WhatsApp and Call)
+                    </a>
                   </div>
                 </div>
 
-                <div className="flex items-start space-x-4">
+                {/* <div className="flex items-start space-x-4">
                   <FontAwesomeIcon icon={faPhone} className="text-shop_dark_green mt-1 text-lg" />
                   <div>
                     <p className="text-gray-800 font-medium">For General Inquiries</p>
                     <p className="text-gray-600">+20 2 37497624</p>
                   </div>
-                </div>
+                </div> */}
 
                 <div className="flex items-start space-x-4">
                   <FontAwesomeIcon icon={faEnvelope} className="text-shop_dark_green mt-1 text-lg" />
                   <div>
                     <p className="text-gray-800 font-medium">Email</p>
-                    <p className="text-gray-600">nirvanah55@gmail.com</p>
+                    <a 
+                      href="mailto:nirvanah550@gmail.com" 
+                      className="text-gray-600 hover:text-shop_dark_green transition-colors duration-200 hover:underline cursor-pointer"
+                    >
+                      nirvanah550@gmail.com
+                    </a>
                   </div>
                 </div>
 

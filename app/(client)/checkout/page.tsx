@@ -181,6 +181,7 @@ export default function CheckoutPage() {
         shippingCost,
         paymentMethod: "cod",
         products: items.map(item => ({
+          _key: crypto.randomUUID(),
           product: { _ref: item.product._id, _type: "reference" },
           quantity: item.quantity,
           priceAtTime: item.product.status === 'sale' 
@@ -357,7 +358,7 @@ export default function CheckoutPage() {
           <div className="flex items-center gap-3">
             <ShoppingBag className="text-green-600" size={32} />
             <h1 className="text-2xl font-bold text-gray-900">
-              অর্ডার সারাংশ / Order Summary
+              Order Summary
             </h1>
           </div>
           <div className="text-right">

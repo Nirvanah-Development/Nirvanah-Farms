@@ -43,7 +43,7 @@ const CareersPage = () => {
   };
 
   return (
-    <Container className="bg-white min-h-screen py-16">
+    <Container className="bg-white  py-16">
       <div className="max-w-4xl mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-12">

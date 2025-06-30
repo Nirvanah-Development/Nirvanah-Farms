@@ -14,7 +14,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
           {children}
           <CartSidebar />
           <Toaster
-            position="bottom-right"
+            position="top-right"
             toastOptions={{
               style: {
                 background: "#000000",

@@ -4,7 +4,7 @@ import { useCartStore } from "@/store/cart";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect } from "react";
 import { motion } from "motion/react";
-import { Check, Home, Package, ShoppingBag } from "lucide-react";
+import { Check, Home, ShoppingBag } from "lucide-react";
 import Link from "next/link";
 
 const SuccessPageContent = () => {
@@ -86,15 +86,8 @@ const SuccessPageContent = () => {
             Home
           </Link>
           <Link
-            href="/orders"
-            className="flex items-center justify-center px-4 py-3 font-semibold bg-white text-green-600 border-2 border-green-600 rounded-lg hover:bg-green-50 transition-all duration-300 shadow-md"
-          >
-            <Package className="w-5 h-5 mr-2" />
-            My Orders
-          </Link>
-          <Link
             href="/"
-            className="flex items-center justify-center px-4 py-3 font-semibold bg-gray-800 text-white rounded-lg hover:bg-gray-900 transition-all duration-300 shadow-md"
+            className="flex items-center justify-center px-4 py-3 font-semibold bg-white text-green-600 border-2 border-green-600 rounded-lg hover:bg-green-50 transition-all duration-300 shadow-md"
           >
             <ShoppingBag className="w-5 h-5 mr-2" />
             Continue Shopping

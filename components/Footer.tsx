@@ -3,9 +3,10 @@ import Container from "./Container";
 import FooterTop from "./FooterTop";
 import Logo from "./Logo";
 import SocialMedia from "./SocialMedia";
-import { SubText, SubTitle } from "./ui/text";
-import { categoriesData, quickLinksData } from "@/constants/data";
-import Link from "next/link";
+import { SubText } from "./ui/text";
+// import { SubTitle } from "./ui/text";
+// import { categoriesData, quickLinksData } from "@/constants/data";
+// import Link from "next/link";
 
 const Footer = () => {
   return (
@@ -16,8 +17,7 @@ const Footer = () => {
           <div className="space-y-4">
             <Logo />
             <SubText>
-              Discover curated furniture collections at Shopcartyt, blending
-              style and comfort to elevate your living spaces. Thank you for visiting our website.
+            Premium, handpicked farm-fresh mangoes delivered to your doorstep— sustainably grown, bursting with sweet, juicy flavor for every mango lover.
             </SubText>
             <SocialMedia
               className="text-darkColor/60"
@@ -25,7 +25,7 @@ const Footer = () => {
               tooltipClassName="bg-darkColor text-white"
             />
           </div>
-          <div>
+          {/* <div>
             <SubTitle>Quick Links</SubTitle>
             <ul className="space-y-3 mt-4">
               {quickLinksData?.map((item) => (
@@ -54,11 +54,11 @@ const Footer = () => {
                 </li>
               ))}
             </ul>
-          </div>
+          </div> */}
         </div>
         <div className="py-6 border-t text-center text-sm text-gray-600">
           <div>
-            © {new Date().getFullYear()} <Logo className="text-sm" />. All
+            © {new Date().getFullYear()} Nirvanah Farms. All
             rights reserved.
           </div>
         </div>
