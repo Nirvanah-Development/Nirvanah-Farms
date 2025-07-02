@@ -17,7 +17,7 @@ const data: ContactItemData[] = [
   },
   {
     title: "Call Us",
-    subtitle: "+8801767515183",
+    subtitle: "+8801343265120",
     icon: (
       <Phone className="h-6 w-6 text-gray-600 group-hover:text-primary transition-colors" />
     ),

@@ -281,7 +281,7 @@ Payment Method: ${order.paymentMethod === 'cod' ? 'Cash on Delivery' : order.pay
 We'll process your order within 1-2 business days and you'll receive tracking information.
 
 Best regards,
-Your Store Team
+Nirvanah Farms Ltd.
     `;
 
     console.log('📬 Sending email to:', customerEmail);
