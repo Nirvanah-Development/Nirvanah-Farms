@@ -54,8 +54,7 @@ interface Thana {
 
 const shippingOptions = [
   { value: "inside_dhaka", label: "ঢাকা সিটির ভিতরে (Inside Dhaka)", cost: 70 },
-  { value: "inside_chittagong", label: "চট্টগ্রাম সিটির ভিতরে (Inside Chittagong)", cost: 70 },
-  { value: "outside_cities", label: "ঢাকা এবং চট্টগ্রাম সিটির বাহিরে (Outside above cities)", cost: 130 },
+  { value: "outside_cities", label: "ঢাকা সিটির বাহিরে (Outside Dhaka)", cost: 100 },
 ];
 
 export default function CheckoutPage() {
