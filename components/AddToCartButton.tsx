@@ -8,6 +8,9 @@ import toast from "react-hot-toast";
 import PriceFormatter from "./PriceFormatter";
 import QuantityButtons from "./QuantityButtons";
 import { useCart } from "@/contexts/CartContext";
+import { usePurchaseModeStore } from "@/store/purchaseMode";
+import { useState } from "react";
+import { Input } from "./ui/input";
 
 interface Props {
   product: Product;
@@ -17,8 +20,10 @@ interface Props {
 const AddToCartButton = ({ product, className }: Props) => {
   const { addItem, items } = useCartStore();
   const { openCart } = useCart();
-  
-  // Get item count from the cart store with proper null checking
+  const { purchaseMode } = usePurchaseModeStore();
+
+  const [groupMembers, setGroupMembers] = useState(1);
+
   const itemCount = items.find(item => item.product._id === product?._id)?.quantity || 0;
 
   const handleAddToCart = () => {
@@ -26,11 +31,10 @@ const AddToCartButton = ({ product, className }: Props) => {
       toast.error("Invalid product");
       return;
     }
-
-    // Use the full Product type directly
     const cartItem = {
       product: product,
       quantity: 1,
+      groupMembers: purchaseMode === 'group' ? groupMembers : undefined,
     };
     
     addItem(cartItem);
@@ -40,9 +44,61 @@ const AddToCartButton = ({ product, className }: Props) => {
     );
   };
 
-  // Calculate price with null checks
   const regularPrice = product?.regularPrice || 0;
   const subtotalAmount = regularPrice * itemCount;
+  const perPersonCost = purchaseMode === 'group' && groupMembers > 0 ? regularPrice / groupMembers : regularPrice;
+
+  if (purchaseMode === 'group') {
+    return (
+      <div className="w-full space-y-3">
+        <div className="flex items-center justify-between">
+          <span className="text-sm font-medium">Total Purchasers</span>
+          <Input
+            type="number"
+            min={2}
+            value={groupMembers}
+            onChange={(e) => setGroupMembers(Number(e.target.value))}
+            className="w-20 h-8"
+          />
+        </div>
+        <div className="flex items-center justify-between">
+          <span className="text-sm font-medium">
+            পরিমাণ <span className="text-xs text-gray-500">(জনপ্রতি)</span>
+          </span>
+          <span className="text-sm font-bold text-shop_dark_green">
+            {product.name?.includes('10') ? `${(10 / groupMembers).toFixed(2)}KG` : `${(20 / groupMembers).toFixed(2)}KG`}
+          </span>
+        </div>
+        <div className="flex items-center justify-between">
+          <span className="text-sm font-medium">
+            খরচ <span className="text-xs text-gray-500">(জনপ্রতি)</span>
+          </span>
+          <PriceFormatter
+            amount={perPersonCost}
+            className="text-sm font-bold text-shop_dark_green"
+          />
+        </div>
+        <div className="flex items-center justify-between border-t pt-2">
+            <span className="text-sm font-semibold text-darkColor">Subtotal</span>
+            <PriceFormatter
+              amount={regularPrice}
+              className="text-sm font-bold text-shop_dark_green"
+            />
+        </div>
+        <Button
+          onClick={handleAddToCart}
+          disabled={!product?._id}
+          className={cn(
+            "w-full h-10 sm:h-11 bg-shop_dark_green/80 text-white shadow-none border border-shop_dark_green/80 font-semibold tracking-wide hover:bg-shop_dark_green hover:border-shop_dark_green transition-all duration-200 text-xs sm:text-sm rounded-lg",
+            className
+          )}
+        >
+          <ShoppingBag className="w-4 h-4 mr-1" />
+          <span className="truncate">Add to Cart</span>
+        </Button>
+      </div>
+    )
+  }
 
   return (
     <div className="w-full">

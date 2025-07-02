@@ -5,6 +5,7 @@ import { Product } from "@/sanity.types";
 export interface CartItem {
   product: Product;
   quantity: number;
+  groupMembers?: number;
 }
 
 interface CartStore {

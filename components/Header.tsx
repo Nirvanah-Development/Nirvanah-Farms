@@ -11,6 +11,7 @@ import { useCart } from "@/contexts/CartContext";
 import { useCartStore } from "@/store/cart";
 import { Button } from "./ui/button";
 import SideMenu from "./SideMenu";
+import { PurchaseModeToggle } from "./PurchaseModeToggle";
 
 const Header = () => {
   const { openCart } = useCart();
@@ -37,29 +38,8 @@ const Header = () => {
 
         {/* Right Section - Action Buttons */}
         <div className="flex items-center gap-1 sm:gap-2 md:gap-3 justify-end flex-shrink-0">
-          {/* Mango Calendar Button; Removing now, later we will add it back */}
-          {/* <Button
-            variant="ghost"
-            size="sm"
-            className="
-              h-9 sm:h-10 
-              px-2 sm:px-3 md:px-4 
-              text-xs sm:text-sm 
-              font-medium 
-              hover:text-shop_light_green 
-              hoverEffect 
-              border border-gray-200 
-              hover:border-shop_light_green/50
-              transition-all duration-200
-              whitespace-nowrap
-              min-w-0
-              flex-shrink-0
-            "
-            onClick={() => setIsSideMenuOpen(true)}
-          >
-            <span className="hidden xs:inline">🥭Mango Calendar</span>
-            <span className="xs:hidden">🥭Calendar</span>
-          </Button>
+          {/* Purchase Mode Toggle */}
+          <PurchaseModeToggle />
 
           {/* Shopping Cart Button */}
           <Button
