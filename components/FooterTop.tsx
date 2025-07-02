@@ -10,7 +10,7 @@ interface ContactItemData {
 const data: ContactItemData[] = [
   {
     title: "Visit Us",
-    subtitle: "Sapahar, Naogaon",
+    subtitle: "Chowdhury Plaza,Sapahar,Naogaon",
     icon: (
       <MapPin className="h-6 w-6 text-gray-600 group-hover:text-primary transition-colors" />
     ),
