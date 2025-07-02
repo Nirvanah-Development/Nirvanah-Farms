@@ -63,7 +63,7 @@ const AddToCartButton = ({ product, className }: Props) => {
         </div>
         <div className="flex items-center justify-between">
           <span className="text-sm font-medium">
-            Amount <span className="text-xs text-gray-500">(Per Person)</span>
+            পরিমাণ <span className="text-xs text-gray-500">(জনপ্রতি)</span>
           </span>
           <span className="text-sm font-bold text-shop_dark_green">
             {product.name?.includes('10') ? `${(10 / groupMembers).toFixed(2)}KG` : `${(20 / groupMembers).toFixed(2)}KG`}
@@ -71,7 +71,7 @@ const AddToCartButton = ({ product, className }: Props) => {
         </div>
         <div className="flex items-center justify-between">
           <span className="text-sm font-medium">
-            Cost <span className="text-xs text-gray-500">(Per Person)</span>
+            খরচ <span className="text-xs text-gray-500">(জনপ্রতি)</span>
           </span>
           <PriceFormatter
             amount={perPersonCost}
